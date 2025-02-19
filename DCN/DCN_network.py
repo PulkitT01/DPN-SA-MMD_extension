@@ -49,7 +49,7 @@ class DCN_network:
         control_batch_size = train_parameters["control_batch_size"]
         lr = train_parameters["lr"]
         shuffle = train_parameters["shuffle"]
-        model_save_path = f"Results/Models/{train_parameters['model_save_path'].format(epochs, lr)}"
+        model_save_path = train_parameters["model_save_path"]
         treated_set_train = train_parameters["treated_set_train"]
         control_set_train = train_parameters["control_set_train"]
 

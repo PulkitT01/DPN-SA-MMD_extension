@@ -26,7 +26,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
 
-from shallow_net import shallow_net
+from PropensityModels.shallow_net import shallow_net
 from Utils.Utils import Utils
 import os
 

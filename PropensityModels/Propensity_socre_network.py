@@ -26,7 +26,7 @@ import torch
 import torch.nn.functional as F
 import torch.optim as optim
 
-from Propensity_net_NN import Propensity_net_NN
+from PropensityModels.Propensity_net_NN import Propensity_net_NN
 from Utils.Utils import Utils
 import os
 
@@ -49,7 +49,7 @@ class Propensity_socre_network:
         batch_size = train_parameters["batch_size"]
         lr = train_parameters["lr"]
         shuffle = train_parameters["shuffle"]
-        model_save_path = train_parameters["model_save_path"].format(epochs, lr)
+        model_save_path = train_parameters["model_save_path"]
         train_set = train_parameters["train_set"]
 
         input_nodes = train_parameters["input_nodes"]
