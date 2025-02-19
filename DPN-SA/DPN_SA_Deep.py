@@ -25,11 +25,11 @@ from datetime import datetime
 
 import numpy as np
 
-from DCN_network import DCN_network
-from Propensity_score_LR import Propensity_socre_LR
-from Propensity_socre_network import Propensity_socre_network
-from Sparse_Propensity_score import Sparse_Propensity_score
-from Utils import Utils
+from DCN.DCN_network import DCN_network
+from PropensityModels.Propensity_score_LR import Propensity_socre_LR
+from PropensityModels.Propensity_socre_network import Propensity_socre_network
+from PropensityModels.Sparse_Propensity_score import Sparse_Propensity_score
+from Utils.Utils import Utils
 
 
 class DPN_SA_Deep:
@@ -294,8 +294,7 @@ class DPN_SA_Deep:
             "batch_size": 32,
             "shuffle": True,
             "train_set": ps_train_set,
-            "model_save_path": "./Propensity_Model/NN_PS_model_iter_id_"
-                               + str(iter_id) + "_epoch_{0}_lr_{1}.pth",
+            "model_save_path": f"Results/Models/SAE_E2E_DCN_model_iter_id_{iter_id}_epoch_{epochs}_lr_{lr}.pth",
             "input_nodes": input_nodes
         }
         # ps using NN

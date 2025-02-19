@@ -27,7 +27,7 @@ import torch.nn.functional as F
 import torch.optim as optim
 
 from shallow_net import shallow_net
-from Utils import Utils
+from Utils.Utils import Utils
 import os
 
 

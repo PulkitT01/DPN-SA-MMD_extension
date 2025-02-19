@@ -26,9 +26,9 @@ from collections import OrderedDict
 
 import numpy as np
 
-from DPN_SA_Deep import DPN_SA_Deep
-from Utils import Utils
-from dataloader import DataLoader
+from DPN-SA.DPN_SA_Deep import DPN_SA_Deep
+from Utils.Utils import Utils
+from Utils.dataloader import DataLoader
 
 
 class Experiments:
@@ -53,7 +53,7 @@ class Experiments:
         run_parameters = self.__get_run_parameters(running_mode)
 
         print(str(train_parameters_SAE))
-        file1 = open(run_parameters["summary_file_name"], "a")
+        file1 = open(run_parameters["Results/Logs/summary_results.txt"], "a")
         file1.write(str(train_parameters_SAE))
         file1.write("\n")
         file1.write("\n")
@@ -413,7 +413,7 @@ class Experiments:
             # LR Lasso
             run_parameters["lr_lasso_prop_file"] = "./MSE/LR_lasso_Prop_score_{0}.csv"
             run_parameters["lr_lasso_iter_file"] = "./MSE/ITE/ITE_LR_Lasso_iter_{0}.csv"
-            run_parameters["summary_file_name"] = "Details_original.txt"
+            run_parameters["summary_file_name"] = "Results/Logs/summary_results.txt"
             run_parameters["is_synthetic"] = False
 
         elif running_mode == "synthetic_data":
@@ -440,7 +440,7 @@ class Experiments:
             run_parameters["lr_lasso_prop_file"] = "./MSE_Augmented/LR_lasso_Prop_score_{0}.csv"
             run_parameters["lr_lasso_iter_file"] = "./MSE_Augmented/ITE/ITE_LR_Lasso_iter_{0}.csv"
 
-            run_parameters["summary_file_name"] = "Details_augmented.txt"
+            run_parameters["summary_file_name"] = "Results/Logs/summary_results_augmented.txt"
             run_parameters["is_synthetic"] = True
 
         return run_parameters

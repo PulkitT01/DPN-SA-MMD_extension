@@ -27,7 +27,7 @@ import torch.nn.functional as F
 import torch.optim as optim
 
 from Propensity_net_NN import Propensity_net_NN
-from Utils import Utils
+from Utils.Utils import Utils
 import os
 
 

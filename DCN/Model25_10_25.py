@@ -26,10 +26,10 @@ from collections import OrderedDict
 
 import numpy as np
 
-from DCN_network import DCN_network
-from Utils import Utils
-from dataloader import DataLoader
-from shallow_train import shallow_train
+from DCN.DCN_network import DCN_network
+from Utils.Utils import Utils
+from Utils.dataloader import DataLoader
+from PropensityModels.shallow_train import shallow_train
 
 
 class Model_25_1_25:
@@ -52,7 +52,7 @@ class Model_25_1_25:
         }
 
         print(str(train_parameters_SAE))
-        file1 = open("Details_original_1.txt", "a")
+        file1 = open("Results/Logs/Details_original_1.txt", "a")
         file1.write(str(train_parameters_SAE))
         file1.write("\n")
         file1.write("Without batch norm")
@@ -166,7 +166,7 @@ class Model_25_1_25:
         sparse_classifier = ps_net_SAE.train(train_parameters_SAE, device, phase="train")
 
         # eval propensity network using SAE
-        model_path_e2e = "./DCNModel/SAE_E2E_DCN_model_iter_id_" + str(iter_id) + "_epoch_{0}_lr_{1}.pth"
+        model_path_e2e = "Results/Models/SAE_E2E_DCN_model_iter_id_" + str(iter_id) + "_epoch_{0}_lr_{1}.pth"
         print("----------End to End SAE training----------")
 
         self.__train_DCN_SAE(ps_net_SAE, ps_train_set, device, np_covariates_X_train,
@@ -230,9 +230,9 @@ class Model_25_1_25:
         # using SAE
         model_path_e2e = "./DCNModel/SAE_E2E_DCN_model_iter_id_{0}_epoch_100_lr_0.001.pth".format(iter_id)
 
-        propensity_score_save_path_e2e = "./MSE/SAE_E2E_Prop_score_{0}.csv"
+        propensity_score_save_path_e2e = "Results/Output/SAE_E2E_Prop_score_{0}.csv"
 
-        ITE_save_path_e2e = "./MSE/ITE/ITE_SAE_E2E_iter_{0}.csv"
+        ITE_save_path_e2e = "Results/Output/ITE/ITE_SAE_E2E_iter_{0}.csv"
 
         print("############### DCN Testing using SAE E2E ###############")
         ate_pred, att_pred, bias_att, atc_pred, policy_value, \

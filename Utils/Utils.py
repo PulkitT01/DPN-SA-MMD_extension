@@ -152,7 +152,8 @@ class Utils:
 
     @staticmethod
     def write_to_csv(file_name, list_to_write):
+        file_path = os.path.join("Results", file_name)
         pd.DataFrame.from_dict(
             list_to_write,
             orient='columns'
-        ).to_csv(file_name)
+        ).to_csv(file_path)

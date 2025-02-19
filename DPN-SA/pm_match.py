@@ -26,9 +26,9 @@ import numpy
 from matplotlib import pyplot
 import pandas as pd
 import os
-from Propensity_socre_network import Propensity_socre_network
-from Utils import Utils
-from dataloader import DataLoader
+from PropensityModels.Propensity_socre_network import Propensity_socre_network
+from Utils.Utils import Utils
+from Utils.dataloader import DataLoader
 
 
 def draw(treated_ps_list, control_ps_list, bins1):

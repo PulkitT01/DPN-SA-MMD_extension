@@ -25,11 +25,11 @@ SOFTWARE.
 import matplotlib.pyplot as plt
 import numpy as np
 
-from Propensity_score_LR import Propensity_socre_LR
-from Propensity_socre_network import Propensity_socre_network
-from Sparse_Propensity_score import Sparse_Propensity_score
-from Utils import Utils
-from dataloader import DataLoader
+from PropensityModels.Propensity_score_LR import Propensity_socre_LR
+from PropensityModels.Propensity_socre_network import Propensity_socre_network
+from PropensityModels.Sparse_Propensity_score import Sparse_Propensity_score
+from Utils.Utils import Utils
+from Utils.dataloader import DataLoader
 
 
 class Graphs:
@@ -83,6 +83,9 @@ class Graphs:
             "model_path": "./Propensity_Model/Graph_NN_PS_model_epoch_50_lr_0.001.pth"
         }
 
+        output_dir = "Results/Output/Graphs"
+        os.makedirs(output_dir, exist_ok=True)
+
         # ps_score_list_NN = ps_net_NN.eval(eval_parameters_NN, device, phase="eval")
         ps_score_list_NN = ps_net_NN.eval_return_complete_list(eval_parameters_NN, device, phase="eval")
         treated_ps_list = [d["prop_score"] for d in ps_score_list_NN if d['treatment'] == 1]
@@ -92,7 +95,7 @@ class Graphs:
         print("total: " + str(len(treated_ps_list) + len(control_ps_list)))
         self.draw(treated_ps_list, control_ps_list,
                   label_treated="Treated", label_control="Control",
-                  fig_name="./Plots/Fig_NN",
+                  fig_name=f"{output_dir}/Fig_NN",
                   title="Jobs: DCN-PD", max_limit=500)
         return ps_score_list_NN
 
@@ -116,6 +119,9 @@ class Graphs:
         sparse_classifier, sae_classifier_stacked_all_layer_active, \
         sae_classifier_stacked_cur_layer_active = ps_net_SAE.train(train_parameters_SAE, device, phase="train")
 
+        output_dir = "Results/Output/Graphs"
+        os.makedirs(output_dir, exist_ok=True)
+
         ps_score_list_SAE = ps_net_SAE.eval_return_complete_list(ps_train_set, device, phase="eval",
                                                                  sparse_classifier=sparse_classifier)
         treated_ps_list = [d["prop_score"] for d in ps_score_list_SAE if d['treatment'] == 1]
@@ -125,7 +131,7 @@ class Graphs:
         print("total: " + str(len(treated_ps_list) + len(control_ps_list)))
         self.draw(treated_ps_list, control_ps_list,
                   label_treated="Treated", label_control="Control",
-                  fig_name="./Plots/Fig_SAE",
+                  fig_name=f"{output_dir}/Fig_SAE",
                   title="Jobs: DPN-SA End to End", max_limit=500)
         return ps_score_list_SAE
 
@@ -141,9 +147,12 @@ class Graphs:
         treated_ps_list, control_ps_list = Propensity_socre_LR.train_graph(np_covariates_X_train,
                                                                            np_covariates_Y_train,
                                                                            regularized=True)
+        output_dir = "Results/Output/Graphs"
+        os.makedirs(output_dir, exist_ok=True)
+
         self.draw(treated_ps_list, control_ps_list,
                   label_treated="Treated", label_control="Control",
-                  fig_name="./Plots/Fig_LR_Lasso",
+                  fig_name=f"{output_dir}/Fig_LR_Lasso",
                   title="Jobs: LR Lasso", max_limit=500)
         return treated_ps_list
 

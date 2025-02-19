@@ -30,7 +30,7 @@ import os
 
 from Sparse_Propensity_net import Sparse_Propensity_net
 from Sparse_Propensity_net_shallow import Sparse_Propensity_net_shallow
-from Utils import Utils
+from Utils.Utils import Utils
 
 
 class Sparse_Propensity_score:

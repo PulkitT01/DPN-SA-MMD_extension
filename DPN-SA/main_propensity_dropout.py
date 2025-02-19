@@ -23,10 +23,10 @@ SOFTWARE.
 """
 
 # from Graphs import Graphs
-from Experiments import Experiments
-from Graphs import Graphs
+from DPN-SA.Experiments import Experiments
+from Graphs.Graphs import Graphs
 
-from Model25_10_25 import Model_25_1_25
+from DCN.Model25_10_25 import Model_25_1_25
 # from DCN_PD_test import DCN_PD_Deep
 
 if __name__ == '__main__':
