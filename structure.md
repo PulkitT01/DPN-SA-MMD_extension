@@ -1,4 +1,3 @@
-.
 ├── Dataset
 │   ├── columns.txt
 │   ├── ihdp_sample.csv
