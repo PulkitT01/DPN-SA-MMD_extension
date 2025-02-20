@@ -24,7 +24,7 @@ SOFTWARE.
 from datetime import datetime
 
 import numpy as np
-
+import os
 from DCN.DCN_network import DCN_network
 from PropensityModels.Propensity_score_LR import Propensity_socre_LR
 from PropensityModels.Propensity_socre_network import Propensity_socre_network
@@ -290,6 +290,7 @@ class DPN_SA_Deep:
                                   iter_id, device, input_nodes, is_synthetic):
         epochs = 50
         lr = 0.001
+        os.makedirs("Results/Models", exist_ok=True)
         train_parameters_NN = {
             "epochs": epochs,
             "iter_id": iter_id,
@@ -321,7 +322,7 @@ class DPN_SA_Deep:
                                                               ps_score_list_train_NN,
                                                               is_synthetic)
 
-        model_path = "Results/Models/NN_DCN_model_iter_id_" + str(iter_id) + "_epoch_{0}_lr_{1}.pth"
+        model_path = "Results/Models/NN_DCN_model_iter_id_" + str(iter_id) + "_epoch_{epochs}_lr_{lr}.pth"
         self.__train_DCN(data_loader_dict_train_NN, model_path, dL, device,
                          input_nodes)
 
