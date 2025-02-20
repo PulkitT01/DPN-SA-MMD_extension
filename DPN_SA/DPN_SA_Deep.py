@@ -288,7 +288,7 @@ class DPN_SA_Deep:
                                   np_covariates_X_train,
                                   np_covariates_Y_train, dL,
                                   iter_id, device, input_nodes, is_synthetic):
-        epochs = 50
+        epochs = 100
         lr = 0.001
         os.makedirs("Results/Models", exist_ok=True)
         train_parameters_NN = {
