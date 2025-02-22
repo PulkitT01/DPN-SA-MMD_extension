@@ -132,11 +132,13 @@ class DPN_SA_Deep:
                                                          run_parameters["input_nodes"])
 
         # using SAE
-        model_path_e2e = "Results/Models/SAE_E2E_DCN_model_iter_id_{0}_epoch_100_lr_0.0001.pth".format(iter_id)
-        model_path_stacked_all = "Results/Models/SAE_stacked_all_DCN_model_iter_id_{0}_epoch_100_lr_0.0001.pth".format(
-            iter_id)
-        model_path_stacked_cur = "Results/Models/SAE_stacked_cur_DCN_model_iter_id_{0}_epoch_100_lr_0.0001.pth".format(
-            iter_id)
+        epochs = 100  # Set dynamically if needed
+        lr = 0.0001   # Set dynamically if needed
+        
+        model_path_e2e = f"Results/Models/SAE_E2E_DCN_model_iter_id_{iter_id}_epoch_{epochs}_lr_{lr}.pth"
+        model_path_stacked_all = f"Results/Models/SAE_stacked_all_DCN_model_iter_id_{iter_id}_epoch_{epochs}_lr_{lr}.pth"
+        model_path_stacked_cur = f"Results/Models/SAE_stacked_cur_DCN_model_iter_id_{iter_id}_epoch_{epochs}_lr_{lr}.pth"
+
 
         propensity_score_save_path_e2e = run_parameters["sae_e2e_prop_file"]
         propensity_score_save_path_stacked_all = run_parameters["sae_stacked_all_prop_file"]
@@ -251,7 +253,7 @@ class DPN_SA_Deep:
             "SAE_e2e_err_fact": SAE_e2e_policy_risk,
 
             "SAE_stacked_all_layer_active_ate_pred": SAE_stacked_all_layer_active_ate_pred,
-            "SAE_stacked_all_layer_active_att_pred": SAE_stacked_all_layer_active_ate_pred,
+            "SAE_stacked_all_layer_active_att_pred": SAE_stacked_all_layer_active_att_pred,
             "SAE_stacked_all_layer_active_bias_att": SAE_stacked_all_layer_active_bias_att,
             "SAE_stacked_all_layer_active_atc_pred": SAE_stacked_all_layer_active_bias_att,
             "SAE_stacked_all_layer_active_policy_value": SAE_stacked_all_layer_active_policy_value,
@@ -527,7 +529,11 @@ class DPN_SA_Deep:
                                                         np_covariates_Y_test,
                                                         ps_score_list_NN,
                                                         is_synthetic)
-        model_path = "Results/Models/NN_DCN_model_iter_id_{0}_epoch_100_lr_0.0001.pth".format(iter_id)
+        epochs = 100  # Use the actual training epoch value
+        lr = 0.0001   # Use the actual learning rate value
+        
+        model_path = f"Results/Models/NN_DCN_model_iter_id_{iter_id}_epoch_{epochs}_lr_{lr}.pth"
+
         ate_pred, att_pred, bias_att, atc_pred, policy_value, \
         policy_risk, err_fact = self.__do_test_DCN(data_loader_dict_NN,
                                                    dL, device,
@@ -578,7 +584,7 @@ class DPN_SA_Deep:
                                                          ps_score_list_LR,
                                                          is_synthetic)
         print("############### DCN Testing using LR ###############")
-        model_path = "Results/Models/LR_DCN_model_iter_id_{0}_epoch_100_lr_0.0001.pth".format(iter_id)
+        model_path = f"Results/Models/LR_DCN_model_iter_id_{iter_id}_epoch_{epochs}_lr_{lr}.pth"
         ate_pred, att_pred, bias_att, atc_pred, policy_value, \
         policy_risk, err_fact = \
             self.__do_test_DCN(data_loader_dict_SAE, dL,
@@ -603,7 +609,7 @@ class DPN_SA_Deep:
                                                          ps_score_list_LR_lasso,
                                                          is_synthetic)
         print("############### DCN Testing using LR Lasso ###############")
-        model_path = "Results/Models/LR_Lasso_DCN_model_iter_id_{0}_epoch_100_lr_0.0001.pth".format(iter_id)
+        model_path = f"Results/Models/LR_Lasso_DCN_model_iter_id_{iter_id}_epoch_{epochs}_lr_{lr}.pth"
 
         ate_pred, att_pred, bias_att, atc_pred, policy_value, \
         policy_risk, err_fact = \
