@@ -49,7 +49,7 @@ class DCN_network:
         control_batch_size = train_parameters["control_batch_size"]
         lr = train_parameters["lr"]
         shuffle = train_parameters["shuffle"]
-        model_save_path = train_parameters["model_save_path"].format(epochs=epochs, lr=lr)
+        model_save_path = train_parameters["model_save_path"]
         treated_set_train = train_parameters["treated_set_train"]
         control_set_train = train_parameters["control_set_train"]
 
@@ -175,7 +175,7 @@ class DCN_network:
         print(".. Evaluation started ..")
         treated_set = eval_parameters["treated_set"]
         control_set = eval_parameters["control_set"]
-        model_path = eval_parameters["model_save_path"].format(epochs=100, lr=0.0001)
+        model_path = eval_parameters["model_save_path"]
         network = DCN(training_flag=False, input_nodes=input_nodes).to(device)
         # Add weights_only=True to get rid of the warning
         network.load_state_dict(torch.load(model_path, map_location=device, weights_only=True))
