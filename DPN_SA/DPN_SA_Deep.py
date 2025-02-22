@@ -584,6 +584,8 @@ class DPN_SA_Deep:
                                                          ps_score_list_LR,
                                                          is_synthetic)
         print("############### DCN Testing using LR ###############")
+        epochs = 100
+        lr = 0.0001
         model_path = f"Results/Models/LR_DCN_model_iter_id_{iter_id}_epoch_{epochs}_lr_{lr}.pth"
         ate_pred, att_pred, bias_att, atc_pred, policy_value, \
         policy_risk, err_fact = \
