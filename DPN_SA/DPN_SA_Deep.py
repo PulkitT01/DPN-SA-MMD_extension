@@ -364,6 +364,8 @@ class DPN_SA_Deep:
         sae_classifier_stacked_cur_layer_active = ps_net_SAE.train(train_parameters_SAE, device, phase="train")
 
         # eval propensity network using SAE
+        epochs = 100  # Set dynamically if needed
+        lr = 0.0001   # Set dynamically if needed
         model_path_e2e = f"Results/Models/SAE_E2E_DCN_model_iter_id_{iter_id}_epoch_{epochs}_lr_{lr}.pth"
         model_path_stacked_all = f"Results/Models/SAE_stacked_all_DCN_model_iter_id_{iter_id}_epoch_{epochs}_lr_{lr}.pth"
         model_path_stacked_cur = f"Results/Models/SAE_stacked_cur_DCN_model_iter_id_{iter_id}_epoch_{epochs}_lr_{lr}.pth"
