@@ -324,7 +324,7 @@ class DPN_SA_Deep:
                                                               ps_score_list_train_NN,
                                                               is_synthetic)
 
-        model_path = "Results/Models/NN_DCN_model_iter_id_" + str(iter_id) + "_epoch_{epochs}_lr_{lr}.pth"
+        model_path = f"Results/Models/NN_DCN_model_iter_id_{iter_id}_epoch_{epochs}_lr_{lr}.pth"
         self.__train_DCN(data_loader_dict_train_NN, model_path, dL, device,
                          input_nodes)
 
@@ -364,11 +364,9 @@ class DPN_SA_Deep:
         sae_classifier_stacked_cur_layer_active = ps_net_SAE.train(train_parameters_SAE, device, phase="train")
 
         # eval propensity network using SAE
-        model_path_e2e = "Results/Models/SAE_E2E_DCN_model_iter_id_" + str(iter_id) + "_epoch_{0}_lr_{1}.pth"
-        model_path_stacked_all = "Results/Models/SAE_stacked_all_DCN_model_iter_id_" + \
-                                 str(iter_id) + "_epoch_{0}_lr_{1}.pth"
-        model_path_stacked_cur = "Results/Models/SAE_stacked_cur_DCN_model_iter_id_" + \
-                                 str(iter_id) + "_epoch_{0}_lr_{1}.pth"
+        model_path_e2e = f"Results/Models/SAE_E2E_DCN_model_iter_id_{iter_id}_epoch_{epochs}_lr_{lr}.pth"
+        model_path_stacked_all = f"Results/Models/SAE_stacked_all_DCN_model_iter_id_{iter_id}_epoch_{epochs}_lr_{lr}.pth"
+        model_path_stacked_cur = f"Results/Models/SAE_stacked_cur_DCN_model_iter_id_{iter_id}_epoch_{epochs}_lr_{lr}.pth"
         print("---" * 25)
         print("End to End SAE training")
         print("---" * 25)
