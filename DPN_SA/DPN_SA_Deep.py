@@ -540,7 +540,7 @@ class DPN_SA_Deep:
                                                         ps_score_list_NN,
                                                         is_synthetic)
         epochs = 100  # Use the actual training epoch value
-        lr = 0.0001   # Use the actual learning rate value
+        lr = 0.001   # Use the actual learning rate value
         
         model_path = f"Results/Models/NN_DCN_model_iter_id_{iter_id}_epoch_{epochs}_lr_{lr}.pth"
 
