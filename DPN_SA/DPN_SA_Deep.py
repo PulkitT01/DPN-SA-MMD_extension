@@ -134,6 +134,7 @@ class DPN_SA_Deep:
         # using SAE
         epochs = 100  # Set dynamically if needed
         lr = 0.0001   # Set dynamically if needed
+        os.makedirs("Results/Models", exist_ok=True)
         
         model_path_e2e = f"Results/Models/SAE_E2E_DCN_model_iter_id_{iter_id}_epoch_{epochs}_lr_{lr}.pth"
         model_path_stacked_all = f"Results/Models/SAE_stacked_all_DCN_model_iter_id_{iter_id}_epoch_{epochs}_lr_{lr}.pth"
@@ -366,6 +367,7 @@ class DPN_SA_Deep:
         # eval propensity network using SAE
         epochs = 400  # Set dynamically if needed
         lr = 0.0001   # Set dynamically if needed
+        os.makedirs("Results/Models", exist_ok=True)
         model_path_e2e = f"Results/Models/SAE_E2E_DCN_model_iter_id_{iter_id}_epoch_{epochs}_lr_{lr}.pth"
         model_path_stacked_all = f"Results/Models/SAE_stacked_all_DCN_model_iter_id_{iter_id}_epoch_{epochs}_lr_{lr}.pth"
         model_path_stacked_cur = f"Results/Models/SAE_stacked_cur_DCN_model_iter_id_{iter_id}_epoch_{epochs}_lr_{lr}.pth"
@@ -454,9 +456,11 @@ class DPN_SA_Deep:
                                                         np_covariates_Y_train,
                                                         ps_score_list_LR,
                                                         is_synthetic)
-        epochs = 100  # Use the actual training epoch value
-        lr = 0.0001   # Use the actual learning rate value
-        model_path = "Results/Models/LR_DCN_model_iter_id_{iter_id}_epoch_{epochs}_lr_{lr}.pth"
+        # Change from static string to f-string
+        epochs = 100
+        lr = 0.0001
+        os.makedirs("Results/Models", exist_ok=True)
+        model_path = f"Results/Models/LR_DCN_model_iter_id_{iter_id}_epoch_{epochs}_lr_{lr}.pth"
         self.__train_DCN(data_loader_dict_LR, model_path, dL, device, input_nodes)
 
         return LR_model
@@ -473,9 +477,11 @@ class DPN_SA_Deep:
                                                               np_covariates_Y_train,
                                                               ps_score_list_LR_lasso,
                                                               is_synthetic)
-        epochs = 100  # Use the actual training epoch value
-        lr = 0.0001   # Use the actual learning rate value
-        model_path = "Results/Models/LR_Lasso_DCN_model_iter_id_{iter_id}_epoch_{epochs}_lr_{lr}.pth"
+        # Change from static string to f-string
+        epochs = 100
+        lr = 0.0001
+        os.makedirs("Results/Models", exist_ok=True)
+        model_path = f"Results/Models/LR_Lasso_DCN_model_iter_id_{iter_id}_epoch_{epochs}_lr_{lr}.pth"
         self.__train_DCN(data_loader_dict_LR_lasso, model_path, dL, device, input_nodes)
 
         return LR_model_lasso
