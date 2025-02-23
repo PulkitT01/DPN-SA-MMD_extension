@@ -311,7 +311,7 @@ class DPN_SA_Deep:
         # eval
         eval_parameters_train_NN = {
             "eval_set": ps_train_set,
-            "model_path": f"Results/Models/NN_PS_model_iter_id_{iter_id}_epoch_{train_parameters_NN['epochs']}_lr_{train_parameters_NN['lr']}.pth",
+            "model_path": train_parameters_NN["model_save_path"],
             "input_nodes": input_nodes
         }
 
@@ -324,7 +324,7 @@ class DPN_SA_Deep:
                                                               ps_score_list_train_NN,
                                                               is_synthetic)
 
-        model_path = f"Results/Models/NN_DCN_model_iter_id_{iter_id}_epoch_{epochs}_lr_{lr}.pth"
+        model_path = f"Results/Models/NN_DCN_model_iter_id_{iter_id}_epoch_{train_parameters_NN['epochs']}_lr_{train_parameters_NN['lr']}.pth"
         self.__train_DCN(data_loader_dict_train_NN, model_path, dL, device,
                          input_nodes)
 
