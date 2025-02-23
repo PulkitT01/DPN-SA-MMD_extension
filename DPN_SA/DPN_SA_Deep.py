@@ -132,7 +132,7 @@ class DPN_SA_Deep:
                                                          run_parameters["input_nodes"])
 
         # using SAE
-        epochs = 100  # Set dynamically if needed
+        epochs = 400  # Set dynamically if needed
         lr = 0.0001   # Set dynamically if needed
         os.makedirs("Results/Models", exist_ok=True)
         
