@@ -95,7 +95,6 @@ DPN-SA-MMD_extension/
 │── main_propensity_dropout.py    # Main script for running experiments
 │── LICENSE                       # License information
 │── README.md                     # Documentation file
-│── structure.md                   # Additional repo structure details
 ```
 
 ## License
