@@ -102,6 +102,6 @@ DPN-SA-MMD_extension/
 This project is licensed under the MIT License. See the LICENSE file for more details.
 
 ## References
-- [Original DPN-SA Paper]([https://academic.oup.com/](https://pubmed.ncbi.nlm.nih.gov/33594415/))
+- [Original DPN-SA Paper](https://pubmed.ncbi.nlm.nih.gov/33594415/)
 - [GitHub Repository of Original DPN-SA](https://github.com/shantanu-ai/DPN-SA)
 
