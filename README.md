@@ -75,6 +75,7 @@ DPN-SA-MMD_extension/
 │── PropensityModels/             # Propensity score estimation models
 │   ├── Propensity_net_NN.py
 │   ├── Propensity_score_LR.py
+│   ├── Propensity_socre_network.py
 │   ├── Sparse_Propensity_net.py
 │   ├── Sparse_Propensity_net_shallow.py
 │   ├── Sparse_Propensity_score.py
