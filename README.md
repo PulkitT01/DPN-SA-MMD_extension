@@ -96,7 +96,6 @@ DPN-SA-MMD_extension/
 │── LICENSE                       # License information
 │── README.md                     # Documentation file
 │── structure.md                   # Additional repo structure details
-│── venv/                         # Virtual environment directory (optional)
 ```
 
 ## License
