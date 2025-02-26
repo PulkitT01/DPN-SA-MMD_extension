@@ -2,7 +2,7 @@ from collections import OrderedDict
 
 import numpy as np
 
-from DPN_SA.DPN_SA_Deep import DPN_SA_Deep
+from DPN_SA.mmd_DPN_SA_Deep import DPN_SA_Deep
 from Utils.Utils import Utils
 from Utils.dataloader import DataLoader
 
