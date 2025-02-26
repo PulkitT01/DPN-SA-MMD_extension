@@ -63,8 +63,6 @@ class Experiments:
                                    sparse_classifier,
                                    sae_classifier_stacked_all_layer_active,
                                    sae_classifier_stacked_cur_layer_active,
-                                   LR_model,
-                                   LR_model_lasso,
                                    device, run_parameters)
 
             # MSE_SAE_e2e = reply["MSE_SAE_e2e"]
