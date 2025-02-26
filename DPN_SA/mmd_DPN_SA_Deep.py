@@ -42,8 +42,7 @@ class DPN_SA_Deep:
     def test_DCN(self, iter_id, np_covariates_X_test, np_covariates_Y_test, dL,
                  sparse_classifier,
                  sae_classifier_stacked_all_layer_active,
-                 sae_classifier_stacked_cur_layer_active,
-                 LR_model, LR_model_lasso, device,
+                 sae_classifier_stacked_cur_layer_active, device,
                  run_parameters):
         print("----------- Testing phase ------------")
         ps_test_set = dL.convert_to_tensor(np_covariates_X_test,
