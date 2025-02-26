@@ -1,4 +1,4 @@
-from DPN_SA.Experiments import Experiments
+from DPN_SA.mmd_Experiments import Experiments
 from Graphs.Graphs import Graphs
 
 from DCN.Model25_10_25 import Model_25_1_25
