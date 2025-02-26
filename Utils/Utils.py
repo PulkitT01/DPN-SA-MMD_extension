@@ -136,6 +136,41 @@ class Utils:
         return torch.sum(rho * torch.log(rho / rho_hat) + (1 - rho) * torch.log((1 - rho) / (1 - rho_hat)))
 
     @staticmethod
+    def MMD(x, y, kernel="rbf"):
+        """
+        Compute the Maximum Mean Discrepancy (MMD) between two samples x and y.
+        """
+        xx = torch.mm(x, x.t())   # [n, n]
+        yy = torch.mm(y, y.t())   # [m, m]
+        xy = torch.mm(x, y.t())   # [n, m]
+    
+        rx = (x**2).sum(dim=1, keepdim=True)  # [n, 1]
+        ry = (y**2).sum(dim=1, keepdim=True)  # [m, 1]
+    
+        # Squared pairwise distances
+        dxx = rx + rx.t() - 2.*xx
+        dyy = ry + ry.t() - 2.*yy
+        dxy = rx + ry.t() - 2.*xy
+    
+        # Multiple RBF kernel bandwidths
+        bandwidths = [10, 15, 20, 50]
+        XX, YY, XY = 0., 0., 0.
+        for a in bandwidths:
+            XX += torch.exp(-0.5*dxx/a)
+            YY += torch.exp(-0.5*dyy/a)
+            XY += torch.exp(-0.5*dxy/a)
+    
+        return XX.mean() + YY.mean() - 2.*XY.mean()
+
+    @staticmethod
+    def MMD_loss(rho, rho_hat, device, kernel="rbf"):
+        # Convert activations to probabilities via sigmoid
+        x = torch.sigmoid(rho_hat)
+        # Generate Bernoulli samples with probability rho
+        y = torch.bernoulli(torch.full_like(x, rho)).to(device)
+        return Utils.MMD(x, y, kernel)
+    
+    @staticmethod
     def get_runs(params):
         """
         Gets the run parameters using cartesian products of the different parameters.
