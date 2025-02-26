@@ -164,10 +164,12 @@ class Utils:
 
     @staticmethod
     def MMD_loss(rho, rho_hat, device, kernel="rbf"):
-        # Convert activations to probabilities via sigmoid
+        # Handle tuple input by taking first element
+        if isinstance(rho, tuple):
+            rho = rho[0]
+            
         x = torch.sigmoid(rho_hat)
-        # Generate Bernoulli samples with probability rho
-        y = torch.bernoulli(torch.full_like(x, rho)).to(device)
+        y = torch.bernoulli(torch.full_like(x, rho)).to(device)  # Now rho is scalar
         return Utils.MMD(x, y, kernel)
     
     @staticmethod
