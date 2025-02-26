@@ -1,26 +1,3 @@
-"""
-MIT License
-
-Copyright (c) 2020 Shantanu Ghosh
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-"""
 from datetime import datetime
 
 import numpy as np
@@ -69,43 +46,10 @@ class DPN_SA_Deep:
                                             run_parameters["input_nodes"],
                                             is_synthetic)
 
-        # using Logistic Regression
-        start = datetime.now()
-        LR_model = self.__train_propensity_net_LR(np_covariates_X_train, np_covariates_Y_train,
-                                                  dL,
-                                                  iter_id, device,
-                                                  run_parameters["input_nodes"],
-                                                  is_synthetic)
-        end = datetime.now()
-        print("Logistic Regression start time: =", start)
-        print("Logistic Regression end time: =", end)
-        diff = start - end
-        # diff_minutes = divmod(diff.seconds, 60)
-        # print('Time to train: ', diff_minutes[0], 'minutes',
-        #       diff_minutes[1], 'seconds')
-
-        # using Logistic Regression Lasso
-        start = datetime.now()
-        LR_model_lasso = self.__train_propensity_net_LR_Lasso(np_covariates_X_train,
-                                                              np_covariates_Y_train,
-                                                              dL,
-                                                              iter_id, device,
-                                                              run_parameters["input_nodes"],
-                                                              is_synthetic)
-        end = datetime.now()
-        print("Logistic Regression Lasso start time: =", start)
-        print("Logistic Regression Lasso end time: =", end)
-        diff = start - end
-        # diff_minutes = divmod(diff.seconds, 60)
-        # print('Time to train: ', diff_minutes[0], 'minutes',
-        #       diff_minutes[1], 'seconds')
-
         return {
             "sparse_classifier": sparse_classifier,
             "sae_classifier_stacked_all_layer_active": sae_classifier_stacked_all_layer_active,
-            "sae_classifier_stacked_cur_layer_active": sae_classifier_stacked_cur_layer_active,
-            "LR_model": LR_model,
-            "LR_model_lasso": LR_model_lasso
+            "sae_classifier_stacked_cur_layer_active": sae_classifier_stacked_cur_layer_active
         }
 
     def test_DCN(self, iter_id, np_covariates_X_test, np_covariates_Y_test, dL,
@@ -117,28 +61,15 @@ class DPN_SA_Deep:
         print("----------- Testing phase ------------")
         ps_test_set = dL.convert_to_tensor(np_covariates_X_test,
                                            np_covariates_Y_test)
-        print("############### DCN Testing using NN ###############")
-        # using NN
-        # MSE_NN, true_ATE_NN, predicted_ATE_NN \
-        NN_ate_pred, NN_att_pred, NN_bias_att, NN_atc_pred, NN_policy_value, \
-        NN_policy_risk, NN_err_fact = self.__test_DCN_NN(iter_id,
-                                                         np_covariates_X_test,
-                                                         np_covariates_Y_test,
-                                                         dL, device,
-                                                         ps_test_set,
-                                                         run_parameters["nn_prop_file"],
-                                                         run_parameters["nn_iter_file"],
-                                                         run_parameters["is_synthetic"],
-                                                         run_parameters["input_nodes"])
 
         # using SAE
         epochs = 400  # Set dynamically if needed
         lr = 0.0001   # Set dynamically if needed
         os.makedirs("Results/Models", exist_ok=True)
         
-        model_path_e2e = f"Results/Models/SAE_E2E_DCN_model_iter_id_{iter_id}_epoch_{epochs}_lr_{lr}.pth"
-        model_path_stacked_all = f"Results/Models/SAE_stacked_all_DCN_model_iter_id_{iter_id}_epoch_{epochs}_lr_{lr}.pth"
-        model_path_stacked_cur = f"Results/Models/SAE_stacked_cur_DCN_model_iter_id_{iter_id}_epoch_{epochs}_lr_{lr}.pth"
+        model_path_e2e = f"Results/Models/SAE_E2E_DCN_model_iter_id_{iter_id}_epoch_{epochs}_lr_{lr}_mmd.pth"
+        model_path_stacked_all = f"Results/Models/SAE_stacked_all_DCN_model_iter_id_{iter_id}_epoch_{epochs}_lr_{lr}_mmd.pth"
+        model_path_stacked_cur = f"Results/Models/SAE_stacked_cur_DCN_model_iter_id_{iter_id}_epoch_{epochs}_lr_{lr}_mmd.pth"
 
 
         propensity_score_save_path_e2e = run_parameters["sae_e2e_prop_file"]
@@ -207,44 +138,8 @@ class DPN_SA_Deep:
                                 run_parameters["is_synthetic"],
                                 run_parameters["input_nodes"])
 
-        # using LR
-        LR_ate_pred, LR_att_pred, \
-        LR_bias_att, LR_atc_pred, \
-        LR_policy_value, \
-        LR_policy_risk, LR_err_fact = self.__test_DCN_LR(np_covariates_X_test, np_covariates_Y_test,
-                                                         LR_model,
-                                                         iter_id, dL, device,
-                                                         run_parameters["lr_prop_file"],
-                                                         run_parameters["lr_iter_file"],
-                                                         run_parameters["is_synthetic"],
-                                                         run_parameters["input_nodes"])
-
-        # using LR Lasso
-        LR_Lasso_ate_pred, LR_Lasso_att_pred, \
-        LR_Lasso_bias_att, LR_Lasso_atc_pred, \
-        LR_Lasso_policy_value, \
-        LR_Lasso_policy_risk, LR_Lasso_err_fact = self.__test_DCN_LR_Lasso(np_covariates_X_test,
-                                                                           np_covariates_Y_test,
-                                                                           LR_model_lasso,
-                                                                           iter_id, dL, device,
-                                                                           run_parameters[
-                                                                               "lr_lasso_prop_file"],
-                                                                           run_parameters[
-                                                                               "lr_lasso_iter_file"],
-                                                                           run_parameters[
-                                                                               "is_synthetic"],
-                                                                           run_parameters[
-                                                                               "input_nodes"])
-
+        
         return {
-            "NN_ate_pred": NN_ate_pred,
-            "NN_att_pred": NN_att_pred,
-            "NN_bias_att": NN_bias_att,
-            "NN_atc_pred": NN_atc_pred,
-            "NN_policy_value": NN_policy_value,
-            "NN_policy_risk": NN_policy_risk,
-            "NN_err_fact": NN_err_fact,
-
             "SAE_e2e_ate_pred": SAE_e2e_ate_pred,
             "SAE_e2e_att_pred": SAE_e2e_att_pred,
             "SAE_e2e_bias_att": SAE_e2e_bias_att,
@@ -267,67 +162,9 @@ class DPN_SA_Deep:
             "SAE_stacked_cur_layer_active_atc_pred": SAE_stacked_cur_layer_active_atc_pred,
             "SAE_stacked_cur_layer_active_policy_value": SAE_stacked_cur_layer_active_policy_value,
             "SAE_stacked_cur_layer_active_policy_risk": SAE_stacked_cur_layer_active_policy_risk,
-            "SAE_stacked_cur_layer_active_err_fact": SAE_stacked_cur_layer_active_err_fact,
-
-            "LR_ate_pred": LR_ate_pred,
-            "LR_att_pred": LR_att_pred,
-            "LR_bias_att": LR_bias_att,
-            "LR_atc_pred": LR_atc_pred,
-            "LR_policy_value": LR_policy_value,
-            "LR_policy_risk": LR_policy_risk,
-            "LR_err_fact": LR_err_fact,
-
-            "LR_Lasso_ate_pred": LR_Lasso_ate_pred,
-            "LR_Lasso_att_pred": LR_Lasso_att_pred,
-            "LR_Lasso_bias_att": LR_Lasso_bias_att,
-            "LR_Lasso_atc_pred": LR_Lasso_atc_pred,
-            "LR_Lasso_policy_value": LR_Lasso_policy_value,
-            "LR_Lasso_policy_risk": LR_Lasso_policy_risk,
-            "LR_Lasso_err_fact": LR_Lasso_err_fact
+            "SAE_stacked_cur_layer_active_err_fact": SAE_stacked_cur_layer_active_err_fact
 
         }
-
-    def __train_propensity_net_NN(self, ps_train_set,
-                                  np_covariates_X_train,
-                                  np_covariates_Y_train, dL,
-                                  iter_id, device, input_nodes, is_synthetic):
-        epochs = 100
-        lr = 0.001
-        os.makedirs("Results/Models", exist_ok=True)
-        train_parameters_NN = {
-            "epochs": epochs,
-            "iter_id": iter_id,
-            "lr": lr,
-            "batch_size": 32,
-            "shuffle": True,
-            "train_set": ps_train_set,
-            "model_save_path": f"Results/Models/NN_PS_model_iter_id_{iter_id}_epoch_{epochs}_lr_{lr}.pth",
-            "input_nodes": input_nodes
-        }
-        # ps using NN
-        ps_net_NN = Propensity_socre_network()
-        print("############### Propensity Score neural net Training ###############")
-        ps_net_NN.train(train_parameters_NN, device, phase="train")
-
-        # eval
-        eval_parameters_train_NN = {
-            "eval_set": ps_train_set,
-            "model_path": train_parameters_NN["model_save_path"],
-            "input_nodes": input_nodes
-        }
-
-        ps_score_list_train_NN = ps_net_NN.eval(eval_parameters_train_NN, device, phase="eval")
-
-        # train DCN
-        print("############### DCN Training using NN ###############")
-        data_loader_dict_train_NN = dL.prepare_tensor_for_DCN(np_covariates_X_train,
-                                                              np_covariates_Y_train,
-                                                              ps_score_list_train_NN,
-                                                              is_synthetic)
-
-        model_path = f"Results/Models/NN_DCN_model_iter_id_{iter_id}_epoch_{train_parameters_NN['epochs']}_lr_{train_parameters_NN['lr']}.pth"
-        self.__train_DCN(data_loader_dict_train_NN, model_path, dL, device,
-                         input_nodes)
 
     def __train_propensity_net_SAE(self,
                                    ps_train_set, np_covariates_X_train, np_covariates_Y_train,
@@ -368,9 +205,9 @@ class DPN_SA_Deep:
         epochs = 400  # Set dynamically if needed
         lr = 0.0001   # Set dynamically if needed
         os.makedirs("Results/Models", exist_ok=True)
-        model_path_e2e = f"Results/Models/SAE_E2E_DCN_model_iter_id_{iter_id}_epoch_{epochs}_lr_{lr}.pth"
-        model_path_stacked_all = f"Results/Models/SAE_stacked_all_DCN_model_iter_id_{iter_id}_epoch_{epochs}_lr_{lr}.pth"
-        model_path_stacked_cur = f"Results/Models/SAE_stacked_cur_DCN_model_iter_id_{iter_id}_epoch_{epochs}_lr_{lr}.pth"
+        model_path_e2e = f"Results/Models/SAE_E2E_DCN_model_iter_id_{iter_id}_epoch_{epochs}_lr_{lr}_mmd.pth"
+        model_path_stacked_all = f"Results/Models/SAE_stacked_all_DCN_model_iter_id_{iter_id}_epoch_{epochs}_lr_{lr}_mmd.pth"
+        model_path_stacked_cur = f"Results/Models/SAE_stacked_cur_DCN_model_iter_id_{iter_id}_epoch_{epochs}_lr_{lr}_mmd.pth"
         print("---" * 25)
         print("End to End SAE training")
         print("---" * 25)
@@ -444,48 +281,7 @@ class DPN_SA_Deep:
         self.__train_DCN(data_loader_dict_train_SAE,
                          model_path, dL, device, input_nodes)
 
-    def __train_propensity_net_LR(self, np_covariates_X_train, np_covariates_Y_train,
-                                  dL, iter_id, device, input_nodes, is_synthetic):
-        # eval propensity network using Logistic Regression
-        ps_score_list_LR, LR_model = Propensity_socre_LR.train(np_covariates_X_train,
-                                                               np_covariates_Y_train)
-
-        # load data for ITE network using Logistic Regression
-        print("############### DCN Training using Logistic Regression ###############")
-        data_loader_dict_LR = dL.prepare_tensor_for_DCN(np_covariates_X_train,
-                                                        np_covariates_Y_train,
-                                                        ps_score_list_LR,
-                                                        is_synthetic)
-        # Change from static string to f-string
-        epochs = 100
-        lr = 0.0001
-        os.makedirs("Results/Models", exist_ok=True)
-        model_path = f"Results/Models/LR_DCN_model_iter_id_{iter_id}_epoch_{epochs}_lr_{lr}.pth"
-        self.__train_DCN(data_loader_dict_LR, model_path, dL, device, input_nodes)
-
-        return LR_model
-
-    def __train_propensity_net_LR_Lasso(self, np_covariates_X_train, np_covariates_Y_train,
-                                        dL, iter_id, device, input_nodes, is_synthetic):
-        # eval propensity network using Logistic Regression Lasso
-        ps_score_list_LR_lasso, LR_model_lasso = Propensity_socre_LR.train(np_covariates_X_train,
-                                                                           np_covariates_Y_train,
-                                                                           regularized=True)
-        # load data for ITE network using Logistic Regression Lasso
-        print("############### DCN Training using Logistic Regression Lasso ###############")
-        data_loader_dict_LR_lasso = dL.prepare_tensor_for_DCN(np_covariates_X_train,
-                                                              np_covariates_Y_train,
-                                                              ps_score_list_LR_lasso,
-                                                              is_synthetic)
-        # Change from static string to f-string
-        epochs = 100
-        lr = 0.0001
-        os.makedirs("Results/Models", exist_ok=True)
-        model_path = f"Results/Models/LR_Lasso_DCN_model_iter_id_{iter_id}_epoch_{epochs}_lr_{lr}.pth"
-        self.__train_DCN(data_loader_dict_LR_lasso, model_path, dL, device, input_nodes)
-
-        return LR_model_lasso
-
+    
     def __train_DCN(self, data_loader_dict_train, model_path, dL, device, input_nodes):
         tensor_treated_train = self.create_tensors_from_tuple(data_loader_dict_train["treated_data"])
         tensor_control_train = self.create_tensors_from_tuple(data_loader_dict_train["control_data"])
@@ -520,41 +316,6 @@ class DPN_SA_Deep:
                                                  np_df_Y_f)
         return tensor
 
-    def __test_DCN_NN(self, iter_id, np_covariates_X_test, np_covariates_Y_test, dL, device,
-                      ps_test_set,
-                      prop_score_file, iter_file, is_synthetic, input_nodes):
-        # testing using NN
-        ps_net_NN = Propensity_socre_network()
-        ps_eval_parameters_NN = {
-            "eval_set": ps_test_set,
-            "model_path": "Results/Models/NN_PS_model_iter_id_{0}_epoch_100_lr_0.001.pth".format(iter_id),
-            "input_nodes": input_nodes
-        }
-        ps_score_list_NN = ps_net_NN.eval(ps_eval_parameters_NN, device, phase="eval")
-        Utils.write_to_csv(prop_score_file.format(iter_id), ps_score_list_NN)
-
-        # load data for ITE network using vanilla network
-
-        data_loader_dict_NN = dL.prepare_tensor_for_DCN(np_covariates_X_test,
-                                                        np_covariates_Y_test,
-                                                        ps_score_list_NN,
-                                                        is_synthetic)
-        epochs = 100  # Use the actual training epoch value
-        lr = 0.001   # Use the actual learning rate value
-        
-        model_path = f"Results/Models/NN_DCN_model_iter_id_{iter_id}_epoch_{epochs}_lr_{lr}.pth"
-
-        ate_pred, att_pred, bias_att, atc_pred, policy_value, \
-        policy_risk, err_fact = self.__do_test_DCN(data_loader_dict_NN,
-                                                   dL, device,
-                                                   model_path,
-                                                   input_nodes,
-                                                   iter_file,
-                                                   iter_id)
-
-        return ate_pred, att_pred, bias_att, atc_pred, policy_value, \
-               policy_risk, err_fact
-
     def __test_DCN_SAE(self, iter_id, np_covariates_X_test, np_covariates_Y_test, dL, device,
                        ps_test_set, sparse_classifier, model_path, propensity_score_csv_path,
                        iter_file, is_synthetic, input_nodes):
@@ -580,57 +341,6 @@ class DPN_SA_Deep:
         return ate_pred, att_pred, bias_att, atc_pred, policy_value, \
                policy_risk, err_fact
 
-    def __test_DCN_LR(self, np_covariates_X_test, np_covariates_Y_test, LR_model, iter_id, dL, device,
-                      prop_score_file, iter_file, is_synthetic, input_nodes):
-        # testing using Logistic Regression
-        ps_score_list_LR = Propensity_socre_LR.test(np_covariates_X_test,
-                                                    np_covariates_Y_test,
-                                                    log_reg=LR_model)
-        Utils.write_to_csv(prop_score_file.format(iter_id), ps_score_list_LR)
-
-        # load data for ITE network using Logistic Regression
-        data_loader_dict_SAE = dL.prepare_tensor_for_DCN(np_covariates_X_test,
-                                                         np_covariates_Y_test,
-                                                         ps_score_list_LR,
-                                                         is_synthetic)
-        print("############### DCN Testing using LR ###############")
-        epochs = 100
-        lr = 0.0001
-        model_path = f"Results/Models/LR_DCN_model_iter_id_{iter_id}_epoch_{epochs}_lr_{lr}.pth"
-        ate_pred, att_pred, bias_att, atc_pred, policy_value, \
-        policy_risk, err_fact = \
-            self.__do_test_DCN(data_loader_dict_SAE, dL,
-                               device, model_path,
-                               input_nodes, iter_file, iter_id)
-        return ate_pred, att_pred, bias_att, atc_pred, policy_value, \
-               policy_risk, err_fact
-
-    def __test_DCN_LR_Lasso(self, np_covariates_X_test, np_covariates_Y_test, LR_model_lasso,
-                            iter_id, dL, device, prop_score_file, iter_file,
-                            is_synthetic, input_nodes):
-        # testing using Logistic Regression Lasso
-        ps_score_list_LR_lasso = Propensity_socre_LR.test(np_covariates_X_test,
-                                                          np_covariates_Y_test,
-                                                          log_reg=LR_model_lasso)
-
-        Utils.write_to_csv(prop_score_file.format(iter_id), ps_score_list_LR_lasso)
-
-        # load data for ITE network using Logistic Regression Lasso
-        data_loader_dict_SAE = dL.prepare_tensor_for_DCN(np_covariates_X_test,
-                                                         np_covariates_Y_test,
-                                                         ps_score_list_LR_lasso,
-                                                         is_synthetic)
-        print("############### DCN Testing using LR Lasso ###############")
-        epochs = 100
-        lr = 0.0001
-        model_path = f"Results/Models/LR_Lasso_DCN_model_iter_id_{iter_id}_epoch_{epochs}_lr_{lr}.pth"
-
-        ate_pred, att_pred, bias_att, atc_pred, policy_value, \
-        policy_risk, err_fact = \
-            self.__do_test_DCN(data_loader_dict_SAE, dL,
-                               device, model_path, input_nodes, iter_file, iter_id)
-        return ate_pred, att_pred, bias_att, atc_pred, policy_value, \
-               policy_risk, err_fact
 
     def __do_test_DCN(self, data_loader_dict, dL, device, model_path, input_nodes, iter_file, iter_id):
         t_1 = np.ones(data_loader_dict["treated_data"][0].shape[0])
