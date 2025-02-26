@@ -1,1 +1,2 @@
 7402455 : Baseline model run with 10 iterations, for all models like in the original paper.
+7503563 : Model with MMD instead of b-KL in the loss. Run for 10 iterations, for all models.
