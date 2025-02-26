@@ -13,33 +13,6 @@ class Sparse_Propensity_score:
     def __init__(self):
         self.sparse_classifier_e2e = None
 
-    def MMD(x, y, kernel="rbf"):
-        """
-        Compute the Maximum Mean Discrepancy (MMD) between two samples x and y.
-        """
-        xx = torch.mm(x, x.t())   # [n, n]
-        yy = torch.mm(y, y.t())   # [m, m]
-        xy = torch.mm(x, y.t())   # [n, m]
-    
-        rx = (x**2).sum(dim=1, keepdim=True)  # shape [n,1]
-        ry = (y**2).sum(dim=1, keepdim=True)  # shape [m,1]
-    
-        # Compute squared pairwise distances
-        dxx = rx + rx.t() - 2.*xx
-        dyy = ry + ry.t() - 2.*yy
-        dxy = rx + ry.t() - 2.*xy
-    
-        # Define multiple bandwidths for RBF kernel
-        bandwidth_range = [10, 15, 20, 50]
-        XX = YY = XY = 0.
-        for a in bandwidth_range:
-            XX += torch.exp(-0.5*dxx/a)
-            YY += torch.exp(-0.5*dyy/a)
-            XY += torch.exp(-0.5*dxy/a)
-    
-        return XX.mean() + YY.mean() - 2.*XY.mean()
-
-  
     @staticmethod
     def get_num_workers():
         """Determine the optimal number of workers for data loading."""
@@ -309,16 +282,11 @@ class Sparse_Propensity_score:
         values = covariates
         loss = 0
         encoder = list(model_children[0].children())
-    
         if len(encoder) == 2:
             values = model_children[0](values)
         elif len(encoder) == 4:
             values = encoder[2](encoder[1](encoder[0](values)))
-    
-        # Generate a random normal distribution as reference (same size as values)
-        ref_distribution = torch.randn_like(values, device=device)
-    
-        # Compute MMD between encoded representation and reference distribution
-        loss += MMD(values, ref_distribution)
-        
+
+        # Replace KL divergence with MMD loss
+        loss += Utils.MMD_loss(sparsity_probability, values, device)
         return loss
