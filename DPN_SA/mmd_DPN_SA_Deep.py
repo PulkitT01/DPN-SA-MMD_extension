@@ -16,18 +16,6 @@ class DPN_SA_Deep:
                        is_synthetic=False):
         print("----------- Training and evaluation phase ------------")
         ps_train_set = dL.convert_to_tensor(np_covariates_X_train, np_covariates_Y_train)
-
-        # using NN
-        start = datetime.now()
-        self.__train_propensity_net_NN(ps_train_set,
-                                       np_covariates_X_train,
-                                       np_covariates_Y_train,
-                                       dL,
-                                       iter_id, device, run_parameters["input_nodes"],
-                                       is_synthetic)
-        end = datetime.now()
-        print("Neural Net start time: =", start)
-        print("Neural Net end time: =", end)
         # diff = start - end
         # diff_minutes = divmod(diff.seconds, 60)
         # print('Time to train: ', diff_minutes[0], 'minutes',
