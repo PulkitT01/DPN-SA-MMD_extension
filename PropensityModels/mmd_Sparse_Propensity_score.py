@@ -97,7 +97,7 @@ class Sparse_Propensity_score:
         train_set = train_parameters["train_set"]
         input_nodes = train_parameters["input_nodes"]
 
-        sparsity_probability = train_parameters["sparsity_probability"],
+        sparsity_probability = train_parameters["sparsity_probability"]
         weight_decay = train_parameters["weight_decay"]
         BETA = train_parameters["weight_decay"]
 
