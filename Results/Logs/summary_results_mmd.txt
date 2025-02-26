@@ -1,2 +1,35 @@
 {'epochs': 400, 'lr': 0.001, 'batch_size': 32, 'shuffle': True, 'sparsity_probability': 0.8, 'weight_decay': 0.0003, 'BETA': 0.1}
 
+{'epochs': 400, 'lr': 0.001, 'batch_size': 32, 'shuffle': True, 'sparsity_probability': 0.8, 'weight_decay': 0.0003, 'BETA': 0.1}
+
+{'epochs': 400, 'lr': 0.001, 'batch_size': 32, 'shuffle': True, 'sparsity_probability': 0.8, 'weight_decay': 0.0003, 'BETA': 0.1}
+
+{'epochs': 400, 'lr': 0.001, 'batch_size': 32, 'shuffle': True, 'sparsity_probability': 0.8, 'weight_decay': 0.0003, 'BETA': 0.1}
+
+{'epochs': 400, 'lr': 0.001, 'batch_size': 32, 'shuffle': True, 'sparsity_probability': 0.8, 'weight_decay': 0.0003, 'BETA': 0.1}
+
+{'epochs': 400, 'lr': 0.001, 'batch_size': 32, 'shuffle': True, 'sparsity_probability': 0.8, 'weight_decay': 0.0003, 'BETA': 0.1}
+
+Iter: 0, SAE_e2e_bias_att: 0.1261904761904762,  SAE_stacked_all_layer_active_bias_att: 0.20952380952380953,  SAE_stacked_cur_layer_active_bias_att: 0.14285714285714285, SAE_e2e_policy_risk: 0.3092948717948718,  SAE_stacked_all_layer_active_policy_risk: 0.27758215962441324, SAE_stacked_cur_layer_active_policy_risk: 0.3136805555555555 Using SAE E2E, bias att: 0.1261904761904762, SD: 0.0
+Using SAE E2E, policy risk: 0.3092948717948718, SD: 0.0
+-------------------------------------------------
+Using SAE stacked all layer active, bias att: 0.20952380952380953, SD: 0.0
+Using SAE stacked all layer active,  policy risk: 0.27758215962441324, SD: 0.0
+-------------------------------------------------
+Using SAE stacked cur layer active, bias att: 0.14285714285714285, SD: 0.0
+Using SAE stacked cur layer active, policy risk: 0.3136805555555555, SD: 0.3136805555555555
+-------------------------------------------------
+
+##################################################{'epochs': 400, 'lr': 0.001, 'batch_size': 32, 'shuffle': True, 'sparsity_probability': 0.8, 'weight_decay': 0.0003, 'BETA': 0.1}
+
+Iter: 0, SAE_e2e_bias_att: 0.20952380952380953,  SAE_stacked_all_layer_active_bias_att: 0.19285714285714287,  SAE_stacked_cur_layer_active_bias_att: 0.1261904761904762, SAE_e2e_policy_risk: 0.27543035993740217,  SAE_stacked_all_layer_active_policy_risk: 0.31246739697443926, SAE_stacked_cur_layer_active_policy_risk: 0.27951388888888884 Iter: 1, SAE_e2e_bias_att: 0.3071428571428571,  SAE_stacked_all_layer_active_bias_att: 0.29047619047619044,  SAE_stacked_cur_layer_active_bias_att: 0.37380952380952376, SAE_e2e_policy_risk: 0.3676215277777778,  SAE_stacked_all_layer_active_policy_risk: 0.3494318181818181, SAE_stacked_cur_layer_active_policy_risk: 0.32224658869395717 Iter: 2, SAE_e2e_bias_att: 0.04718693284936476,  SAE_stacked_all_layer_active_bias_att: 0.029643073200241954,  SAE_stacked_cur_layer_active_bias_att: 0.058076225045372076, SAE_e2e_policy_risk: 0.25932017543859653,  SAE_stacked_all_layer_active_policy_risk: 0.28841991341991335, SAE_stacked_cur_layer_active_policy_risk: 0.30444813584348474 Iter: 3, SAE_e2e_bias_att: 0.08380112269446664,  SAE_stacked_all_layer_active_bias_att: 0.014835605453087333,  SAE_stacked_cur_layer_active_bias_att: 0.08380112269446664, SAE_e2e_policy_risk: 0.2014814814814816,  SAE_stacked_all_layer_active_policy_risk: 0.20659722222222232, SAE_stacked_cur_layer_active_policy_risk: 0.19883040935672525 Iter: 4, SAE_e2e_bias_att: 0.12966476913345987,  SAE_stacked_all_layer_active_bias_att: 0.1688804554079697,  SAE_stacked_cur_layer_active_bias_att: 0.09044908285895008, SAE_e2e_policy_risk: 0.18055555555555558,  SAE_stacked_all_layer_active_policy_risk: 0.1726598173515982, SAE_stacked_cur_layer_active_policy_risk: 0.18731481481481493 Iter: 5, SAE_e2e_bias_att: 0.03422501966955152,  SAE_stacked_all_layer_active_bias_att: 0.018095987411487005,  SAE_stacked_cur_layer_active_bias_att: 0.030291109362706542, SAE_e2e_policy_risk: 0.234375,  SAE_stacked_all_layer_active_policy_risk: 0.2371433933933933, SAE_stacked_cur_layer_active_policy_risk: 0.2560541310541311 Iter: 6, SAE_e2e_bias_att: 0.02116402116402122,  SAE_stacked_all_layer_active_bias_att: 0.13227513227513232,  SAE_stacked_cur_layer_active_bias_att: 0.13227513227513232, SAE_e2e_policy_risk: 0.29423868312757195,  SAE_stacked_all_layer_active_policy_risk: 0.28677983539094654, SAE_stacked_cur_layer_active_policy_risk: 0.28677983539094654 Iter: 7, SAE_e2e_bias_att: 0.023306340114556665,  SAE_stacked_all_layer_active_bias_att: 0.009480545131344983,  SAE_stacked_cur_layer_active_bias_att: 0.12166699585226157, SAE_e2e_policy_risk: 0.32095046854083,  SAE_stacked_all_layer_active_policy_risk: 0.3325803212851405, SAE_stacked_cur_layer_active_policy_risk: 0.31383868808567594 Iter: 8, SAE_e2e_bias_att: 0.1092502434274587,  SAE_stacked_all_layer_active_bias_att: 0.04771178188899716,  SAE_stacked_cur_layer_active_bias_att: 0.029211295034079765, SAE_e2e_policy_risk: 0.29311774461028195,  SAE_stacked_all_layer_active_policy_risk: 0.2765471167369902, SAE_stacked_cur_layer_active_policy_risk: 0.27768987341772156 Iter: 9, SAE_e2e_bias_att: 0.10499683744465527,  SAE_stacked_all_layer_active_bias_att: 0.10499683744465527,  SAE_stacked_cur_layer_active_bias_att: 0.22264389626818468, SAE_e2e_policy_risk: 0.23289800995024879,  SAE_stacked_all_layer_active_policy_risk: 0.27627175368139223, SAE_stacked_cur_layer_active_policy_risk: 0.26709401709401714 Using SAE E2E, bias att: 0.10702619531642013, SD: 0.0865306238150778
+Using SAE E2E, policy risk: 0.2659989006419746, SD: 0.05345288637614109
+-------------------------------------------------
+Using SAE stacked all layer active, bias att: 0.1009252751546249, SD: 0.0897470915685413
+Using SAE stacked all layer active,  policy risk: 0.2738898588637854, SD: 0.052110954550286
+-------------------------------------------------
+Using SAE stacked cur layer active, bias att: 0.12684148593911537, SD: 0.09848208344538649
+Using SAE stacked cur layer active, policy risk: 0.2693810382640363, SD: 0.2693810382640363
+-------------------------------------------------
+
+##################################################
