@@ -52,8 +52,6 @@ class Experiments:
                                                   is_synthetic=run_parameters["is_synthetic"])
 
             sparse_classifier = trained_models["sparse_classifier"]
-            LR_model = trained_models["LR_model"]
-            LR_model_lasso = trained_models["LR_model_lasso"]
             sae_classifier_stacked_all_layer_active = trained_models["sae_classifier_stacked_all_layer_active"]
             sae_classifier_stacked_cur_layer_active = trained_models["sae_classifier_stacked_cur_layer_active"]
 
@@ -90,14 +88,6 @@ class Experiments:
             # predicted_ATE_LR = reply["predicted_ATE_LR"]
             # predicted_ATE_LR_Lasso = reply["predicted_ATE_LR_Lasso"]
 
-            NN_ate_pred = reply["NN_ate_pred"]
-            NN_att_pred = reply["NN_att_pred"]
-            NN_bias_att = reply["NN_bias_att"]
-            NN_atc_pred = reply["NN_atc_pred"]
-            NN_policy_value = reply["NN_policy_value"]
-            NN_policy_risk = reply["NN_policy_risk"]
-            NN_err_fact = reply["NN_err_fact"]
-
             SAE_e2e_ate_pred = reply["SAE_e2e_ate_pred"]
             SAE_e2e_att_pred = reply["SAE_e2e_att_pred"]
             SAE_e2e_bias_att = reply["SAE_e2e_bias_att"]
@@ -122,57 +112,23 @@ class Experiments:
             SAE_stacked_cur_layer_active_policy_risk = reply["SAE_stacked_cur_layer_active_policy_risk"]
             SAE_stacked_cur_layer_active_err_fact = reply["SAE_stacked_cur_layer_active_err_fact"]
 
-            LR_ate_pred = reply["LR_ate_pred"]
-            LR_att_pred = reply["LR_att_pred"]
-            LR_bias_att = reply["LR_bias_att"]
-            LR_atc_pred = reply["LR_atc_pred"]
-            LR_policy_value = reply["LR_policy_value"]
-            LR_policy_risk = reply["LR_policy_risk"]
-            LR_err_fact = reply["LR_err_fact"]
-
-            LR_Lasso_ate_pred = reply["LR_Lasso_ate_pred"]
-            LR_Lasso_att_pred = reply["LR_Lasso_att_pred"]
-            LR_Lasso_bias_att = reply["LR_Lasso_bias_att"]
-            LR_Lasso_atc_pred = reply["LR_Lasso_atc_pred"]
-            LR_Lasso_policy_value = reply["LR_Lasso_policy_value"]
-            LR_Lasso_policy_risk = reply["LR_Lasso_policy_risk"]
-            LR_Lasso_err_fact = reply["LR_Lasso_err_fact"]
 
             file1.write("Iter: {0}, "
-                        "NN_bias_att: {1},  "
-                        "SAE_e2e_bias_att: {2},  "
-                        "SAE_stacked_all_layer_active_bias_att: {3},  "
-                        "SAE_stacked_cur_layer_active_bias_att: {4}, "
-                        "LR_bias_att: {5}, "
-                        "LR_Lasso_bias_att: {6}, "
-                        "NN_policy_risk: {7}, "
-                        "SAE_e2e_policy_risk: {8},  "
-                        "SAE_stacked_all_layer_active_policy_risk: {9}, "
-                        "SAE_stacked_cur_layer_active_policy_risk: {10}, "
-                        "LR_policy_risk: {11}, "
-                        "LR_Lasso_policy_risk: {12}"
+                        "SAE_e2e_bias_att: {1},  "
+                        "SAE_stacked_all_layer_active_bias_att: {2},  "
+                        "SAE_stacked_cur_layer_active_bias_att: {3}, "
+                        "SAE_e2e_policy_risk: {4},  "
+                        "SAE_stacked_all_layer_active_policy_risk: {5}, "
+                        "SAE_stacked_cur_layer_active_policy_risk: {6} "
+                        
 
-                        .format(iter_id, NN_bias_att,
-                                SAE_e2e_bias_att,
+                        .format(iter_id, SAE_e2e_bias_att,
                                 SAE_stacked_all_layer_active_bias_att,
                                 SAE_stacked_cur_layer_active_bias_att,
-                                LR_bias_att,
-                                LR_Lasso_bias_att,
-                                NN_policy_risk,
                                 SAE_e2e_policy_risk,
                                 SAE_stacked_all_layer_active_policy_risk,
-                                SAE_stacked_cur_layer_active_policy_risk,
-                                LR_policy_risk,
-                                LR_Lasso_policy_risk))
+                                SAE_stacked_cur_layer_active_policy_risk))
             result_dict = OrderedDict()
-            result_dict["iter_id"] = iter_id
-            result_dict["NN_ate_pred"] = NN_ate_pred
-            result_dict["NN_att_pred"] = NN_att_pred
-            result_dict["NN_bias_att"] = NN_bias_att
-            result_dict["NN_atc_pred"] = NN_atc_pred
-            result_dict["NN_policy_value"] = NN_policy_value
-            result_dict["NN_policy_risk"] = NN_policy_risk
-            result_dict["NN_err_fact"] = NN_err_fact
 
             result_dict["SAE_e2e_ate_pred"] = SAE_e2e_ate_pred
             result_dict["SAE_e2e_att_pred"] = SAE_e2e_att_pred
@@ -197,27 +153,7 @@ class Experiments:
             result_dict["SAE_stacked_cur_layer_active_policy_value"] = SAE_stacked_cur_layer_active_policy_value
             result_dict["SAE_stacked_cur_layer_active_policy_risk"] = SAE_stacked_cur_layer_active_policy_risk
             result_dict["SAE_stacked_cur_layer_active_err_fact"] = SAE_stacked_cur_layer_active_err_fact
-
-            result_dict["LR_ate_pred"] = LR_ate_pred
-            result_dict["LR_att_pred"] = LR_att_pred
-            result_dict["LR_bias_att"] = LR_bias_att
-            result_dict["LR_atc_pred"] = LR_atc_pred
-            result_dict["LR_policy_value"] = LR_policy_value
-            result_dict["LR_policy_risk"] = LR_policy_risk
-            result_dict["LR_err_fact"] = LR_err_fact
-
-            result_dict["LR_Lasso_ate_pred"] = LR_Lasso_ate_pred
-            result_dict["LR_Lasso_att_pred"] = LR_Lasso_att_pred
-            result_dict["LR_Lasso_bias_att"] = LR_Lasso_bias_att
-            result_dict["LR_Lasso_atc_pred"] = LR_Lasso_atc_pred
-            result_dict["LR_Lasso_policy_value"] = LR_Lasso_policy_value
-            result_dict["LR_Lasso_policy_risk"] = LR_Lasso_policy_risk
-            result_dict["LR_Lasso_err_fact"] = LR_Lasso_err_fact
-
             results_list.append(result_dict)
-
-        bias_att_set_NN = []
-        policy_risk_set_NN = []
 
         bias_att_set_SAE_E2E = []
         policy_risk_set_SAE_E2E = []
@@ -228,16 +164,7 @@ class Experiments:
         bias_att_set_SAE_stacked_cur_layer = []
         policy_risk_set_SAE_stacked_cur_layer = []
 
-        bias_att_set_LR = []
-        policy_risk_set_LR = []
-
-        bias_att_set_LR_Lasso = []
-        policy_risk_set_LR_Lasso = []
-
         for result in results_list:
-            bias_att_set_NN.append(result["NN_bias_att"])
-            policy_risk_set_NN.append(result["NN_policy_risk"])
-
             bias_att_set_SAE_E2E.append(result["SAE_e2e_bias_att"])
             policy_risk_set_SAE_E2E.append(result["SAE_e2e_policy_risk"])
 
@@ -247,22 +174,7 @@ class Experiments:
             bias_att_set_SAE_stacked_cur_layer.append(result["SAE_stacked_cur_layer_active_bias_att"])
             policy_risk_set_SAE_stacked_cur_layer.append(result["SAE_stacked_cur_layer_active_policy_risk"])
 
-            bias_att_set_LR.append(result["LR_bias_att"])
-            policy_risk_set_LR.append(result["LR_policy_risk"])
-
-            bias_att_set_LR_Lasso.append(result["LR_Lasso_bias_att"])
-            policy_risk_set_LR_Lasso.append(result["LR_Lasso_policy_risk"])
-
-        bias_att_set_NN_mean = np.mean(np.array(bias_att_set_NN))
-        bias_att_set_NN_std = np.std(bias_att_set_NN)
-        policy_risk_set_NN_mean = np.mean(np.array(policy_risk_set_NN))
-        policy_risk_set_NN_std = np.std(policy_risk_set_NN)
-
-        print("\n-------------------------------------------------\n")
-        print("Using NN, bias_att: {0}, SD: {1}".format(bias_att_set_NN_mean, bias_att_set_NN_std))
-        print("Using NN, policy_risk: {0}, SD: {1}".format(policy_risk_set_NN_mean, policy_risk_set_NN_std))
-        print("\n-------------------------------------------------\n")
-
+        
         bias_att_set_SAE_E2E_mean = np.mean(np.array(bias_att_set_SAE_E2E))
         bias_att_set_SAE_E2E_std = np.std(bias_att_set_SAE_E2E)
         policy_risk_set_SAE_E2E_mean = np.mean(np.array(policy_risk_set_SAE_E2E))
@@ -301,31 +213,7 @@ class Experiments:
             policy_risk_set_SAE_stacked_cur_layer_std))
 
         print("\n-------------------------------------------------\n")
-
-        bias_att_set_LR_mean = np.mean(np.array(bias_att_set_LR))
-        bias_att_set_LR_std = np.std(bias_att_set_LR)
-        policy_risk_set_LR_mean = np.mean(np.array(policy_risk_set_LR))
-        policy_risk_set_LR_std = np.std(policy_risk_set_LR)
-        print("Using Logistic Regression, bias_att: {0}, SD: {1}".format(bias_att_set_LR_mean, bias_att_set_LR_std))
-        print("Using Logistic Regression, policy_risk: {0}, SD: {1}".format(policy_risk_set_LR_mean,
-                                                                            policy_risk_set_LR_std))
-        print("\n-------------------------------------------------\n")
-
-        bias_att_set_LR_Lasso_mean = np.mean(np.array(bias_att_set_LR_Lasso))
-        bias_att_set_LR_Lasso_std = np.std(bias_att_set_LR_Lasso)
-        policy_risk_set_LR_Lasso_mean = np.mean(np.array(policy_risk_set_LR_Lasso))
-        policy_risk_set_LR_Lasso_std = np.std(policy_risk_set_LR_Lasso)
-        print("Using Lasso Logistic Regression, bias_att: {0}, SD: {1}".format(bias_att_set_LR_Lasso_mean,
-                                                                               bias_att_set_LR_Lasso_std))
-        print("Using Lasso Logistic Regression, policy_risk: {0}, SD: {1}".format(policy_risk_set_LR_Lasso_mean,
-                                                                                  policy_risk_set_LR_Lasso_std))
         print("--" * 20)
-
-        file1.write("\n##################################################")
-        file1.write("\n")
-        file1.write("\nUsing NN, bias att: {0}, SD: {1}".format(bias_att_set_NN_mean, bias_att_set_NN_std))
-        file1.write("\nUsing NN, policy risk: {0}, SD: {1}".format(policy_risk_set_NN_mean, policy_risk_set_NN_std))
-        file1.write("\n-------------------------------------------------\n")
 
         file1.write("Using SAE E2E, bias att: {0}, SD: {1}".format(bias_att_set_SAE_E2E_mean, bias_att_set_SAE_E2E_std))
         file1.write("\nUsing SAE E2E, policy risk: {0}, SD: {1}".format(policy_risk_set_SAE_E2E_mean,
@@ -348,17 +236,6 @@ class Experiments:
                     .format(policy_risk_set_SAE_stacked_cur_layer_mean,
                             policy_risk_set_SAE_stacked_cur_layer_mean))
         file1.write("\n-------------------------------------------------\n")
-        file1.write("Using Logistic Regression, bias att: {0}, SD: {1}".format(bias_att_set_LR_mean,
-                                                                               bias_att_set_LR_std))
-        file1.write("\nUsing Logistic Regression, policy risk: {0}, SD: {1}".format(policy_risk_set_LR_mean,
-                                                                                    policy_risk_set_LR_std))
-
-        file1.write("\n-------------------------------------------------\n")
-        file1.write(
-            "Using Lasso Logistic Regression, bias att: {0}, SD: {1}".format(bias_att_set_LR_Lasso_mean,
-                                                                             bias_att_set_LR_Lasso_std))
-        file1.write("\nUsing Lasso Logistic Regression, policy risk: {0}, SD: {1}".format(policy_risk_set_LR_Lasso_mean,
-                                                                                          policy_risk_set_LR_Lasso_std))
         file1.write("\n##################################################")
 
         Utils.write_to_csv(run_parameters["consolidated_file_path"], results_list)
@@ -368,55 +245,35 @@ class Experiments:
         run_parameters = {}
         if running_mode == "original_data":
             run_parameters["input_nodes"] = 17
-            run_parameters["consolidated_file_path"] = "Results/Output/Results_consolidated.csv"
+            run_parameters["consolidated_file_path"] = "Results/Output/Results_consolidated_mmd.csv"
 
-            # NN
-            run_parameters["nn_prop_file"] = "Results/Output/NN_Prop_score_{0}.csv"
-            run_parameters["nn_iter_file"] = "Results/Output/ITE/ITE_NN_iter_{0}.csv"
             # SAE
-            run_parameters["sae_e2e_prop_file"] = "Results/Output/SAE_E2E_Prop_score_{0}.csv"
-            run_parameters["sae_stacked_all_prop_file"] = "Results/Output/SAE_stacked_all_Prop_score_{0}.csv"
-            run_parameters["sae_stacked_cur_prop_file"] = "Results/Output/SAE_stacked_cur_Prop_score_{0}.csv"
+            run_parameters["sae_e2e_prop_file"] = "Results/Output/SAE_E2E_Prop_score_{0}_mmd.csv"
+            run_parameters["sae_stacked_all_prop_file"] = "Results/Output/SAE_stacked_all_Prop_score_{0}_mmd.csv"
+            run_parameters["sae_stacked_cur_prop_file"] = "Results/Output/SAE_stacked_cur_Prop_score_{0}_mmd.csv"
 
-            run_parameters["sae_e2e_iter_file"] = "Results/Output/ITE/ITE_SAE_E2E_iter_{0}.csv"
-            run_parameters["sae_stacked_all_iter_file"] = "Results/Output/ITE/ITE_SAE_stacked_all_iter_{0}.csv"
-            run_parameters["sae_stacked_cur_iter_file"] = "Results/Output/ITE/ITE_SAE_stacked_cur_Prop_iter_{0}.csv"
+            run_parameters["sae_e2e_iter_file"] = "Results/Output/ITE/ITE_SAE_E2E_iter_{0}_mmd.csv"
+            run_parameters["sae_stacked_all_iter_file"] = "Results/Output/ITE/ITE_SAE_stacked_all_iter_{0}_mmd.csv"
+            run_parameters["sae_stacked_cur_iter_file"] = "Results/Output/ITE/ITE_SAE_stacked_cur_Prop_iter_{0}_mmd.csv"
 
-            # LR
-            run_parameters["lr_prop_file"] = "Results/Output/LR_Prop_score_{0}.csv"
-            run_parameters["lr_iter_file"] = "Results/Output/ITE/ITE_LR_iter_{0}.csv"
-
-            # LR Lasso
-            run_parameters["lr_lasso_prop_file"] = "Results/Output/LR_lasso_Prop_score_{0}.csv"
-            run_parameters["lr_lasso_iter_file"] = "Results/Output/ITE/ITE_LR_Lasso_iter_{0}.csv"
-            run_parameters["summary_file_name"] = "Results/Logs/summary_results.txt"
+            run_parameters["summary_file_name"] = "Results/Logs/summary_results_mmd.txt"
             run_parameters["is_synthetic"] = False
 
         elif running_mode == "synthetic_data":
             run_parameters["input_nodes"] = 225
-            run_parameters["consolidated_file_path"] = "Results/Output_Augmented/Results_consolidated.csv"
+            run_parameters["consolidated_file_path"] = "Results/Output_Augmented/Results_consolidated_mmd.csv"
 
-            # NN
-            run_parameters["nn_prop_file"] = "Results/Output_Augmented/NN_Prop_score_{0}.csv"
-            run_parameters["nn_iter_file"] = "Results/Output_Augmented/ITE/ITE_NN_iter_{0}.csv"
+            
             # SAE
-            run_parameters["sae_e2e_prop_file"] = "Results/Output_Augmented/SAE_E2E_Prop_score_{0}.csv"
-            run_parameters["sae_stacked_all_prop_file"] = "Results/Output_Augmented/SAE_stacked_all_Prop_score_{0}.csv"
-            run_parameters["sae_stacked_cur_prop_file"] = "Results/Output_Augmented/SAE_stacked_cur_Prop_score_{0}.csv"
+            run_parameters["sae_e2e_prop_file"] = "Results/Output_Augmented/SAE_E2E_Prop_score_{0}_mmd.csv"
+            run_parameters["sae_stacked_all_prop_file"] = "Results/Output_Augmented/SAE_stacked_all_Prop_score_{0}_mmd.csv"
+            run_parameters["sae_stacked_cur_prop_file"] = "Results/Output_Augmented/SAE_stacked_cur_Prop_score_{0}_mmd.csv"
 
-            run_parameters["sae_e2e_iter_file"] = "Results/Output_Augmented/ITE/ITE_SAE_E2E_iter_{0}.csv"
-            run_parameters["sae_stacked_all_iter_file"] = "Results/Output_Augmented/ITE/ITE_SAE_stacked_all_iter_{0}.csv"
-            run_parameters["sae_stacked_cur_iter_file"] = "Results/Output_Augmented/ITE/ITE_SAE_stacked_cur_Prop_iter_{0}.csv"
+            run_parameters["sae_e2e_iter_file"] = "Results/Output_Augmented/ITE/ITE_SAE_E2E_iter_{0}_mmd.csv"
+            run_parameters["sae_stacked_all_iter_file"] = "Results/Output_Augmented/ITE/ITE_SAE_stacked_all_iter_{0}_mmd.csv"
+            run_parameters["sae_stacked_cur_iter_file"] = "Results/Output_Augmented/ITE/ITE_SAE_stacked_cur_Prop_iter_{0}_mmd.csv"
 
-            # LR
-            run_parameters["lr_prop_file"] = "Results/Output_Augmented/LR_Prop_score_{0}.csv"
-            run_parameters["lr_iter_file"] = "Results/Output_Augmented/ITE/ITE_LR_iter_{0}.csv"
-
-            # LR Lasso
-            run_parameters["lr_lasso_prop_file"] = "Results/Output_Augmented/LR_lasso_Prop_score_{0}.csv"
-            run_parameters["lr_lasso_iter_file"] = "Results/Output_Augmented/ITE/ITE_LR_Lasso_iter_{0}.csv"
-
-            run_parameters["summary_file_name"] = "Results/Logs/summary_results_augmented.txt"
+            run_parameters["summary_file_name"] = "Results/Logs/summary_results_augmented_mmd.txt"
             run_parameters["is_synthetic"] = True
 
         return run_parameters
