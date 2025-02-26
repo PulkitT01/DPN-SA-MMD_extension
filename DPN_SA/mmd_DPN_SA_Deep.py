@@ -3,9 +3,8 @@ from datetime import datetime
 import numpy as np
 import os
 from DCN.DCN_network import DCN_network
-from PropensityModels.Propensity_score_LR import Propensity_socre_LR
 from PropensityModels.Propensity_socre_network import Propensity_socre_network
-from PropensityModels.Sparse_Propensity_score import Sparse_Propensity_score
+from PropensityModels.mmd_Sparse_Propensity_score import Sparse_Propensity_score
 from Utils.Utils import Utils
 
 
