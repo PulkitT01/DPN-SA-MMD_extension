@@ -22,23 +22,6 @@ This repository extends the original implementation by incorporating **Maximum M
 - Matplotlib
 - Scikit-learn
 
-### Setup
-1. Clone this repository:
-   ```sh
-   git clone https://github.com/PulkitT01/DPN-SA-MMD_extension.git
-   cd DPN-SA-MMD_extension
-   ```
-2. Create a virtual environment:
-   ```sh
-   python -m venv venv
-   source venv/bin/activate   # For Linux/Mac
-   venv\Scripts\activate      # For Windows
-   ```
-3. Install required dependencies:
-   ```sh
-   pip install -r requirements.txt
-   ```
-
 ## Usage
 ### Running Experiments
 To run the training and evaluation pipeline:
