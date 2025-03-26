@@ -16,11 +16,11 @@ This repository extends the original implementation by incorporating **Maximum M
 ## Installation
 ### Prerequisites
 - Python 3.10.12
-- PyTorch
-- NumPy
-- Pandas
-- Matplotlib
-- Scikit-learn
+- torch==2.5.1+cu121
+- numpy==2.1.2
+- pandas==2.2.3
+- matplotlib==3.10.0
+- scikit-learn==1.6.0
 
 ## Usage
 ### Running Experiments
