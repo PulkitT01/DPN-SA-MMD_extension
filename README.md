@@ -1,17 +1,21 @@
 # Deep Propensity Network using Sparse Autoencoder (DPN-SA) with MMD Extension
 
 ## Overview
-This repository contains an implementation of the **Deep Propensity Network using a Sparse Autoencoder (DPN-SA)** for estimating treatment effects from observational data. The original DPN-SA model was proposed to address high-dimensional propensity score matching and counterfactual outcome prediction, utilizing deep learning approaches.
+This repository implements **DPN-IPM**, an extension of the **Deep Propensity Network using a Sparse Autoencoder (DPN-SA)**, designed for robust estimation of treatment effects from high-dimensional observational data. While DPN-SA uses a KL-divergence-based regularization to enforce sparsity in latent space, **DPN-IPM replaces this with a Maximum Mean Discrepancy (MMD)** penalty, aligning latent distributions more effectively using an IPM-based regularization approach.
 
-This repository extends the original implementation by incorporating **Maximum Mean Discrepancy (MMD)** as an alternative to the **b-KL loss**, improving the robustness of treatment effect estimation.
+## Key Contributions
+- Replacement of KL-based sparsity regularizer with an **MMD-based regularization** (Integral Probability Metric)
+- Distribution-level alignment of latent codes for better **covariate balancing**
+- Three training modes: **End-to-End**, **Stacked-All**, and **Stacked-Cur**
+- Evaluation using **Jobs dataset**, with focus on ATE, ATT, and policy risk
+- Empirical gains in stability and accuracy of causal effect estimates
 
 ## Features
-- Implementation of **DPN-SA** for causal inference
-- Sparse Autoencoder-based feature extraction for propensity score estimation
-- Counterfactual outcome prediction using deep learning
-- **MMD-based loss implementation** replacing b-KL loss
-- Support for randomized and real-world datasets
-- Performance evaluation with various models (Logistic Regression, LASSO, DCN, DPN-SA)
+- Modular architecture with Sparse Autoencoder for propensity score estimation
+- MMD-based regularization in latent space using **RBF kernel**
+- Deep Counterfactual Network (DCN) for potential outcome prediction
+- End-to-end and layer-wise training configurations
+- Evaluation of models on multiple causal metrics: **ATE**, **ATT**, **Policy Risk**
 
 ## Installation
 ### Prerequisites
@@ -22,70 +26,27 @@ This repository extends the original implementation by incorporating **Maximum M
 - matplotlib==3.10.0
 - scikit-learn==1.6.0
 
+
 ## Usage
 ### Running Experiments
-To run the training and evaluation pipeline:
-```sh
+To train and evaluate DPN-IPM or DPN-SA models on the Jobs dataset:
+```bash
 python main_propensity_dropout.py
 ```
-This script will train and evaluate DPN-SA models on provided datasets.
 
-### Implementing MMD Loss
-To modify the loss function to use **Maximum Mean Discrepancy (MMD)** instead of **b-KL**, update the relevant sections in `DPN_SA_Deep.py`.
-
-## Repository Structure
-```
-DPN-SA-MMD_extension/
-│── Dataset/                     # Contains dataset files
-│   ├── columns.txt
-│   ├── ihdp_sample.csv
-│   ├── jobs_DW_bin.new.10.train.npz
-│   ├── jobs_DW_bin.new.10.test.npz
-│
-│── DCN/                         # Deep Counterfactual Networks (DCN) implementation
-│   ├── DCN_network.py
-│   ├── DCN.py
-│   ├── Model25_10_25.py
-│
-│── DPN_SA/                      # Deep Propensity Network (DPN-SA) implementation
-│   ├── DPN_SA_Deep.py
-│   ├── Experiments.py
-│   ├── pm_match.py
-│
-│── Graphs/                      # Visualization and graphing utilities
-│   ├── Graphs.py
-│
-│── PropensityModels/             # Propensity score estimation models
-│   ├── Propensity_net_NN.py
-│   ├── Propensity_score_LR.py
-│   ├── Propensity_socre_network.py
-│   ├── Sparse_Propensity_net.py
-│   ├── Sparse_Propensity_net_shallow.py
-│   ├── Sparse_Propensity_score.py
-│   ├── shallow_net.py
-│   ├── shallow_train.py
-│
-│── Results/                      # Experiment outputs
-│   ├── Logs/                     # Logs of model runs
-│   ├── Models/                   # Saved model checkpoints
-│   ├── Output/                   # Final model outputs and performance metrics
-│
-│── Utils/                        # Utility scripts for data handling and preprocessing
-│   ├── dataloader.py
-│   ├── Utils.py
-│
-│── job.slurm                     # Slurm job script for cluster execution
-│── main_propensity_dropout.py    # Main script for running experiments
-│── LICENSE                       # License information
-│── README.md                     # Documentation file
-```
+### Implementing MMD Regularization
+MMD-based regularization is integrated into the Sparse Autoencoder in `DPN_SA_Deep.py` and `Utils.py`. The core logic uses RBF kernel to compute the MMD between latent activations and a Bernoulli reference distribution.
 
 ## License
 This project is licensed under the MIT License. See the LICENSE file for more details.
 
 ## References
-- [Original DPN-SA Paper](https://pubmed.ncbi.nlm.nih.gov/33594415/)
-- [GitHub Repository of Original DPN-SA](https://github.com/shantanu-ai/DPN-SA)
+- Ghosh et al. (2021). *Deep Propensity Network using a Sparse Autoencoder*. Journal of the American Medical Informatics Association.
+- Tolstikhin et al. (2018). *Wasserstein Autoencoders*. ICLR.
+- [Original DPN-SA GitHub](https://github.com/shantanu-ai/DPN-SA)
 
 ## Acknowledgements
-- The implementation of the **Maximum Mean Discrepancy (MMD)** loss used in this project is adapted from the Kaggle notebook by Onur Tunali: [Maximum Mean Discrepancy](https://www.kaggle.com/code/onurtunali/maximum-mean-discrepancy)
+- This repository builds on the original DPN-SA implementation.
+- The **MMD loss** function is adapted from the [Kaggle notebook by Onur Tunali](https://www.kaggle.com/code/onurtunali/maximum-mean-discrepancy).
+- Supervised by Roberto Faleh & Sofia Morelli at Eberhard Karls Universität Tübingen.
+
