@@ -22,23 +22,6 @@ This repository extends the original implementation by incorporating **Maximum M
 - Matplotlib
 - Scikit-learn
 
-### Setup
-1. Clone this repository:
-   ```sh
-   git clone https://github.com/PulkitT01/DPN-SA-MMD_extension.git
-   cd DPN-SA-MMD_extension
-   ```
-2. Create a virtual environment:
-   ```sh
-   python -m venv venv
-   source venv/bin/activate   # For Linux/Mac
-   venv\Scripts\activate      # For Windows
-   ```
-3. Install required dependencies:
-   ```sh
-   pip install -r requirements.txt
-   ```
-
 ## Usage
 ### Running Experiments
 To run the training and evaluation pipeline:
@@ -104,3 +87,5 @@ This project is licensed under the MIT License. See the LICENSE file for more de
 - [Original DPN-SA Paper](https://pubmed.ncbi.nlm.nih.gov/33594415/)
 - [GitHub Repository of Original DPN-SA](https://github.com/shantanu-ai/DPN-SA)
 
+## Acknowledgements
+- The implementation of the **Maximum Mean Discrepancy (MMD)** loss used in this project is adapted from the Kaggle notebook by Onur Tunali: [Maximum Mean Discrepancy](https://www.kaggle.com/code/onurtunali/maximum-mean-discrepancy)
