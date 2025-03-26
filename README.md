@@ -104,3 +104,5 @@ This project is licensed under the MIT License. See the LICENSE file for more de
 - [Original DPN-SA Paper](https://pubmed.ncbi.nlm.nih.gov/33594415/)
 - [GitHub Repository of Original DPN-SA](https://github.com/shantanu-ai/DPN-SA)
 
+## Acknowledgements
+- The implementation of the **Maximum Mean Discrepancy (MMD)** loss used in this project is adapted from the Kaggle notebook by Onur Tunali: [Maximum Mean Discrepancy](https://www.kaggle.com/code/onurtunali/maximum-mean-discrepancy)
