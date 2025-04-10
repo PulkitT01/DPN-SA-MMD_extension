@@ -1,27 +1,3 @@
-"""
-MIT License
-
-Copyright (c) 2020 Shantanu Ghosh
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-"""
-
 import os
 
 import numpy as np
@@ -137,8 +113,7 @@ class DataLoader:
         np_train_T = Utils.convert_to_col_vector(train_arr['t'][:, iter_id])
         np_train_T = np_train_T.to(device) if isinstance(np_train_T, torch.Tensor) else torch.tensor(np_train_T, dtype=torch.float32).to(device)
         
-        np_train_e = Utils.convert_to_col_vector(train_arr['e'][:, iter_id])
-        np_train_e = np_train_e.to(device) if isinstance(np_train_e, torch.Tensor) else torch.tensor(np_train_e, dtype=torch.float32).to(device)
+        np_train_e = torch.ones_like(np_train_T)
         
         np_train_yf = Utils.convert_to_col_vector(train_arr['yf'][:, iter_id])
         np_train_yf = np_train_yf.to(device) if isinstance(np_train_yf, torch.Tensor) else torch.tensor(np_train_yf, dtype=torch.float32).to(device)
@@ -151,8 +126,7 @@ class DataLoader:
         np_test_T = Utils.convert_to_col_vector(test_arr['t'][:, iter_id])
         np_test_T = np_test_T.to(device) if isinstance(np_test_T, torch.Tensor) else torch.tensor(np_test_T, dtype=torch.float32).to(device)
         
-        np_test_e = Utils.convert_to_col_vector(test_arr['e'][:, iter_id])
-        np_test_e = np_test_e.to(device) if isinstance(np_test_e, torch.Tensor) else torch.tensor(np_test_e, dtype=torch.float32).to(device)
+        np_test_e = torch.ones_like(np_test_T)
         
         np_test_yf = Utils.convert_to_col_vector(test_arr['yf'][:, iter_id])
         np_test_yf = np_test_yf.to(device) if isinstance(np_test_yf, torch.Tensor) else torch.tensor(np_test_yf, dtype=torch.float32).to(device)
@@ -342,8 +316,8 @@ class DataLoader:
             # for synthetic dataset #covariates: 75
             df_X = df.iloc[:, 0:75]
         else:
-            # for original dataset #covariates: 17
-            df_X = df.iloc[:, 0:17]
+            # for original dataset #covariates: 25
+            df_X = df.iloc[:, 0:25]
 
         ps_score = df.iloc[:, -1]
         df_Y_f = df.iloc[:, -3]
