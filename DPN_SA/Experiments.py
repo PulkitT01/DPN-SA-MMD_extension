@@ -34,8 +34,8 @@ from Utils.dataloader import DataLoader
 class Experiments:
     def run_all_experiments(self, iterations, running_mode):
 
-        train_path = "Dataset/jobs_DW_bin.new.10.train.npz"
-        test_path = "Dataset/jobs_DW_bin.new.10.test.npz"
+        train_path = "Dataset/ihdp_npci_1-100.train.npz"
+        test_path = "Dataset/ihdp_npci_1-100.test.npz"
         split_size = 0.8
         device = Utils.get_device()
         print(device)
@@ -391,7 +391,7 @@ class Experiments:
     def __get_run_parameters(running_mode):
         run_parameters = {}
         if running_mode == "original_data":
-            run_parameters["input_nodes"] = 17
+            run_parameters["input_nodes"] = 25
             run_parameters["consolidated_file_path"] = "Results/Output/Results_consolidated.csv"
 
             # NN
