@@ -113,11 +113,8 @@ class DCN_network:
                     # print(y1_hat.shape)
                     # print(y_f.shape)
 
-                    if torch.cuda.is_available():
-                        loss = F.cross_entropy(y1_hat.cuda(), y_f.cuda()).to(device)
-                    else:
-                        lossF = nn.MSELoss()
-                        loss = lossF(y1_hat.squeeze(), y_f.float()).to(device)
+                    lossF = nn.MSELoss()
+                    loss = lossF(y1_hat.squeeze(), y_f.float()).to(device)
                     optimizer.zero_grad()
                     loss.backward()
                     optimizer.step()
@@ -150,10 +147,8 @@ class DCN_network:
                     y0_hat = network(covariates_X, ps_score)[1]
                     # treatment_pred[0] -> y1
                     # treatment_pred[1] -> y0
-                    if torch.cuda.is_available():
-                        loss = F.cross_entropy(y0_hat.cuda(), y_f.cuda()).to(device)
-                    else:
-                        loss = lossF(y0_hat.squeeze(), y_f.float()).to(device)
+                    lossF = nn.MSELoss()
+                    loss = F.cross_entropy(y0_hat.cuda(), y_f.cuda()).to(device)    
                     optimizer.zero_grad()
                     loss.backward()
                     optimizer.step()
