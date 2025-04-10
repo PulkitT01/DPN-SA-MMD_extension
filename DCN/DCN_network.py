@@ -148,7 +148,7 @@ class DCN_network:
                     # treatment_pred[0] -> y1
                     # treatment_pred[1] -> y0
                     lossF = nn.MSELoss()
-                    loss = F.cross_entropy(y0_hat.cuda(), y_f.cuda()).to(device)    
+                    loss = lossF(y0_hat.view(-1), y_f.float().view(-1)).to(device)  
                     optimizer.zero_grad()
                     loss.backward()
                     optimizer.step()
