@@ -116,7 +116,8 @@ class DCN_network:
                     if torch.cuda.is_available():
                         loss = F.cross_entropy(y1_hat.cuda(), y_f.cuda()).to(device)
                     else:
-                        loss = F.cross_entropy(y1_hat, y_f).to(device)
+                        lossF = nn.MSELoss()
+                        loss = lossF(y1_hat.squeeze(), y_f.float()).to(device)
                     optimizer.zero_grad()
                     loss.backward()
                     optimizer.step()
@@ -152,7 +153,7 @@ class DCN_network:
                     if torch.cuda.is_available():
                         loss = F.cross_entropy(y0_hat.cuda(), y_f.cuda()).to(device)
                     else:
-                        loss = F.cross_entropy(y0_hat, y_f).to(device)
+                        loss = lossF(y0_hat.squeeze(), y_f.float()).to(device)
                     optimizer.zero_grad()
                     loss.backward()
                     optimizer.step()
