@@ -114,7 +114,7 @@ class DCN_network:
                     # print(y_f.shape)
 
                     lossF = nn.MSELoss()
-                    loss = lossF(y1_hat.squeeze(), y_f.float()).to(device)
+                    loss = lossF(y1_hat.view(-1), y_f.view(-1).float()).to(device)
                     optimizer.zero_grad()
                     loss.backward()
                     optimizer.step()
@@ -148,7 +148,7 @@ class DCN_network:
                     # treatment_pred[0] -> y1
                     # treatment_pred[1] -> y0
                     lossF = nn.MSELoss()
-                    loss = lossF(y0_hat.view(-1), y_f.float().view(-1)).to(device)  
+                    loss = lossF(y0_hat.view(-1), y_f.view(-1).float()).to(device)  
                     optimizer.zero_grad()
                     loss.backward()
                     optimizer.step()
