@@ -1,27 +1,3 @@
-"""
-MIT License
-
-Copyright (c) 2020 Shantanu Ghosh
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-"""
-
 import math
 from collections import namedtuple
 from itertools import product
@@ -63,15 +39,19 @@ class Utils:
         return processed_dataset
 
     @staticmethod
-    def create_tensors_from_tuple_test(group, t):
+    def create_tensors_from_tuple_test(group, t, has_e=True):
         np_df_X = group[0]
         np_ps_score = group[1]
         np_df_Y_f = group[2]
-        np_df_e = group[3]
-        tensor = Utils.convert_to_tensor_DCN_test(np_df_X, np_ps_score,
-                                                  np_df_Y_f, t, np_df_e)
-
-        return tensor
+        
+        if has_e and len(group) > 3:
+            np_df_e = group[3]
+        else:
+            # create dummy 'e' as ones (or zeros)
+            np_df_e = np.ones_like(t)
+        
+        return Utils.convert_to_tensor_DCN_test(np_df_X, np_ps_score,
+                                                np_df_Y_f, t, np_df_e)
 
     @staticmethod
     def convert_to_tensor_DCN_test(X, ps_score, Y_f, t, e):
