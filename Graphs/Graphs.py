@@ -31,6 +31,9 @@ class Graphs:
         ps_train_set = dL.convert_to_tensor(train_X, train_T)
     
         # Run SAE and (optionally) NN
+        for data in ps_train_set:
+            print("Sample input shape in ps_train_set:", data[0].shape)
+            break
         ps_list_SAE = self.__train_propensity_net_SAE(ps_train_set, device, input_nodes, title_suffix)
     
     def __train_propensity_net_NN(self, ps_train_set, device):
