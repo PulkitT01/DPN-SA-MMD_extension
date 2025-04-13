@@ -87,6 +87,9 @@ class DataLoader:
     @staticmethod
     def convert_to_tensor(X, Y):
         print("Inside convert_to_tensor → X shape BEFORE stack:", X.shape)
+        if X.shape[1] == 26:  # IHDP with yf appended
+            print("🧹 Trimming last column (yf) from covariates.")
+            X = X[:, :-1]
         tensor_x = X.to(torch.device("cuda" if torch.cuda.is_available() else "cpu")) if isinstance(X, torch.Tensor) else torch.tensor(X, dtype=torch.float32)
         tensor_y = Y.to(torch.device("cuda" if torch.cuda.is_available() else "cpu")) if isinstance(Y, torch.Tensor) else torch.tensor(Y, dtype=torch.float32)
         print("Inside convert_to_tensor → X shape AFTER conversion:", tensor_x.shape)
