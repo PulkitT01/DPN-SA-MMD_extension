@@ -1,27 +1,3 @@
-"""
-MIT License
-
-Copyright (c) 2020 Shantanu Ghosh
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-"""
-
 import matplotlib.pyplot as plt
 import numpy as np
 import os
@@ -33,34 +9,30 @@ from Utils.dataloader import DataLoader
 
 
 class Graphs:
-    def draw_scatter_plots(self):
+    def draw_scatter_plots(self, running_mode="original_data", iter_id=0):
         device = Utils.get_device()
-        train_path = "Dataset/jobs_DW_bin.new.10.train.npz"
         dL = DataLoader()
-        np_covariates_X, np_covariates_Y = dL.preprocess_for_graphs(train_path)
-        ps_train_set = dL.convert_to_tensor(np_covariates_X, np_covariates_Y)
-        # ps_list_nn = self.__train_propensity_net_NN(ps_train_set, device)
-        ps_list_SAE = self.__train_propensity_net_SAE(ps_train_set, device)
-
-        # ps_list_LR = self.__train_propensity_net_LR(np_covariates_X, np_covariates_Y)
-        # ps_list_LR_lasso = self.__train_propensity_net_LR_Lasso(np_covariates_X, np_covariates_Y)
-
-        # print(len(ps_list_nn))
-        # print(len(ps_list_SAE))
-        # print(len(ps_list_LR))
-        # print(len(ps_list_LR_lasso))
-        #
-        # self.draw_ps_scatter_plots_all(ps_list_nn, ps_list_SAE, ps_list_LR, ps_list_LR_lasso)
-        #
-        # self.draw_ps_scatter_plots(ps_list_nn, "PD")
-        # self.draw_ps_scatter_plots(ps_list_SAE, "SAE")
-        # self.draw_ps_scatter_plots(ps_list_LR, "LR")
-        # self.draw_ps_scatter_plots(ps_list_LR_lasso, "LR Lasso")
-        #
-        # self.draw_ps_scatter_plots_sae(ps_list_nn, ps_list_SAE, x_label="PD", y_label="SAE")
-        # self.draw_ps_scatter_plots_sae(ps_list_LR, ps_list_SAE, x_label="LR", y_label="SAE")
-        # self.draw_ps_scatter_plots_sae(ps_list_LR_lasso, ps_list_SAE, x_label="LR_Lasso", y_label="SAE")
-
+    
+        if running_mode == "original_data":
+            train_path = "Dataset/jobs_DW_bin.new.10.train.npz"
+            input_nodes = 17
+            title_suffix = "Jobs"
+            train_X, train_T = dL.preprocess_for_graphs(train_path, iter_id)
+    
+        elif running_mode == "ihdp":
+            train_path = "Dataset/ihdp_npci_1-100.train.npz"
+            input_nodes = 25
+            title_suffix = "IHDP"
+            train_X, train_T = dL.preprocess_for_graphs(train_path, iter_id, is_ihdp=True)
+    
+        else:
+            raise ValueError("Unsupported running_mode")
+    
+        ps_train_set = dL.convert_to_tensor(train_X, train_T)
+    
+        # Run SAE and (optionally) NN
+        ps_list_SAE = self.__train_propensity_net_SAE(ps_train_set, device, input_nodes, title_suffix)
+    
     def __train_propensity_net_NN(self, ps_train_set, device):
         train_parameters_NN = {
             "epochs": 50,
@@ -99,8 +71,7 @@ class Graphs:
                   title="Jobs: DCN-PD", max_limit=500)
         return ps_score_list_NN
 
-    def __train_propensity_net_SAE(self, ps_train_set, device):
-        # !!! best parameter list
+    def __train_propensity_net_SAE(self, ps_train_set, device, input_nodes, title_suffix):
         train_parameters_SAE = {
             "epochs": 400,
             "lr": 0.001,
@@ -110,31 +81,28 @@ class Graphs:
             "sparsity_probability": 0.8,
             "weight_decay": 0.0003,
             "BETA": 0.1,
-            "input_nodes": 17,
-            "model_save_path": "./Propensity_Model/SAE_PS_model_iter_id_epoch_{0}_lr_{1}.pth"
+            "input_nodes": input_nodes,
+            "model_save_path": f"./Propensity_Model/SAE_PS_model_{title_suffix}_epoch_{{0}}_lr_{{1}}.pth"
         }
-
+    
         ps_net_SAE = Sparse_Propensity_score()
         print("############### Propensity Score SAE net Training ###############")
-        sparse_classifier, sae_classifier_stacked_all_layer_active, \
-        sae_classifier_stacked_cur_layer_active = ps_net_SAE.train(train_parameters_SAE, device, phase="train")
-
-        output_dir = "Results/Output/Graphs"
+        sparse_classifier, _, _ = ps_net_SAE.train(train_parameters_SAE, device, phase="train")
+    
+        output_dir = f"Results/Output/Graphs/{title_suffix}"
         os.makedirs(output_dir, exist_ok=True)
-
+    
         ps_score_list_SAE = ps_net_SAE.eval_return_complete_list(ps_train_set, device, phase="eval",
                                                                  sparse_classifier=sparse_classifier)
         treated_ps_list = [d["prop_score"] for d in ps_score_list_SAE if d['treatment'] == 1]
         control_ps_list = [d["prop_score"] for d in ps_score_list_SAE if d['treatment'] == 0]
-        print("treated: " + str(len(treated_ps_list)))
-        print("control: " + str(len(control_ps_list)))
-        print("total: " + str(len(treated_ps_list) + len(control_ps_list)))
+    
         self.draw(treated_ps_list, control_ps_list,
                   label_treated="Treated", label_control="Control",
                   fig_name=f"{output_dir}/Fig_SAE",
-                  title="Jobs: DPN-SA End to End", max_limit=500)
+                  title=f"{title_suffix}: DPN-SA End to End", max_limit=500)
         return ps_score_list_SAE
-
+    
     @staticmethod
     def __train_propensity_net_LR(np_covariates_X_train, np_covariates_Y_train):
         # eval propensity network using Logistic Regression
@@ -214,4 +182,4 @@ class Graphs:
         plt.show()
 
 
-Graphs().draw_scatter_plots()
+Graphs().draw_scatter_plots(running_mode="ihdp", iter_id=0)
