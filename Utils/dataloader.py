@@ -85,15 +85,13 @@ class DataLoader:
 
     
     @staticmethod
-    def convert_to_tensor(ps_np_covariates_X, ps_np_treatment_Y):
-        # Set the device to GPU if available
-        device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-
-        tensor_x = ps_np_covariates_X.to(device) if isinstance(ps_np_covariates_X, torch.Tensor) else torch.tensor(ps_np_covariates_X, dtype=torch.float32).to(device)
-        tensor_y = ps_np_treatment_Y.to(device) if isinstance(ps_np_treatment_Y, torch.Tensor) else torch.tensor(ps_np_treatment_Y, dtype=torch.float32).to(device)
-
+    def convert_to_tensor(X, Y):
+        print("Inside convert_to_tensor → X shape BEFORE stack:", X.shape)
+        tensor_x = X.to(torch.device("cuda" if torch.cuda.is_available() else "cpu")) if isinstance(X, torch.Tensor) else torch.tensor(X, dtype=torch.float32)
+        tensor_y = Y.to(torch.device("cuda" if torch.cuda.is_available() else "cpu")) if isinstance(Y, torch.Tensor) else torch.tensor(Y, dtype=torch.float32)
+        print("Inside convert_to_tensor → X shape AFTER conversion:", tensor_x.shape)
         return torch.utils.data.TensorDataset(tensor_x, tensor_y)
-
+        
     @staticmethod
     def convert_to_tensor_DCN(np_df_X,
                               np_ps_score,
