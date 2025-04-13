@@ -24,7 +24,7 @@ class Graphs:
             input_nodes = 25
             title_suffix = "IHDP"
             train_X, train_T = dL.preprocess_for_graphs(train_path, iter_id, is_ihdp=True)
-            train_X = train_X[:,:-1] # remove yf to keep only 25 covariates
+            
     
         else:
             raise ValueError("Unsupported running_mode")
