@@ -10,8 +10,12 @@ from Utils.dataloader import DataLoader
 class Experiments:
     def run_all_experiments(self, iterations, running_mode):
 
-        train_path = "Dataset/jobs_DW_bin.new.10.train.npz"
-        test_path = "Dataset/jobs_DW_bin.new.10.test.npz"
+        if running_mode == "ihdp":
+            train_path = "Dataset/ihdp_npci_1-100.train.npz"
+            test_path = "Dataset/ihdp_npci_1-100.test.npz"
+        else:
+            train_path = "Dataset/jobs_DW_bin.new.10.train.npz"
+            test_path = "Dataset/jobs_DW_bin.new.10.test.npz"
         split_size = 0.8
         device = Utils.get_device()
         print(device)
@@ -65,27 +69,7 @@ class Experiments:
                                    sae_classifier_stacked_cur_layer_active,
                                    device, run_parameters)
 
-            # MSE_SAE_e2e = reply["MSE_SAE_e2e"]
-            # MSE_SAE_stacked_all_layer_active = reply["MSE_SAE_stacked_all_layer_active"]
-            # MSE_SAE_stacked_cur_layer_active = reply["MSE_SAE_stacked_cur_layer_active"]
-            # MSE_NN = reply["MSE_NN"]
-            # MSE_LR = reply["MSE_LR"]
-            # MSE_LR_lasso = reply["MSE_LR_Lasso"]
-            #
-            # true_ATE_NN = reply["true_ATE_NN"]
-            # true_ATE_SAE_e2e = reply["true_ATE_SAE_e2e"]
-            # true_ATE_SAE_stacked_all_layer_active = reply["true_ATE_SAE_stacked_all_layer_active"]
-            # true_ATE_SAE_stacked_cur_layer_active = reply["true_ATE_SAE_stacked_cur_layer_active"]
-            # true_ATE_LR = reply["true_ATE_LR"]
-            # true_ATE_LR_Lasso = reply["true_ATE_LR_Lasso"]
-            #
-            # predicted_ATE_NN = reply["predicted_ATE_NN"]
-            # predicted_ATE_SAE_e2e = reply["predicted_ATE_SAE_e2e"]
-            # predicted_ATE_SAE_stacked_all_layer_active = reply["predicted_ATE_SAE_stacked_all_layer_active"]
-            # predicted_ATE_SAE_stacked_cur_layer_active = reply["predicted_ATE_SAE_stacked_cur_layer_active"]
-            # predicted_ATE_LR = reply["predicted_ATE_LR"]
-            # predicted_ATE_LR_Lasso = reply["predicted_ATE_LR_Lasso"]
-
+            
             SAE_e2e_ate_pred = reply["SAE_e2e_ate_pred"]
             SAE_e2e_att_pred = reply["SAE_e2e_att_pred"]
             SAE_e2e_bias_att = reply["SAE_e2e_bias_att"]
@@ -257,6 +241,30 @@ class Experiments:
             run_parameters["summary_file_name"] = "Results/Logs/summary_results_mmd.txt"
             run_parameters["is_synthetic"] = False
 
+        elif running_mode == "ihdp":
+            run_parameters["input_nodes"] = 25
+            run_parameters["consolidated_file_path"] = "Results/Output_IHDP/Results_consolidated.csv"
+        
+            run_parameters["nn_prop_file"] = "Results/Output_IHDP/NN_Prop_score_{0}.csv"
+            run_parameters["nn_iter_file"] = "Results/Output_IHDP/ITE/ITE_NN_iter_{0}.csv"
+        
+            run_parameters["sae_e2e_prop_file"] = "Results/Output_IHDP/SAE_E2E_Prop_score_{0}.csv"
+            run_parameters["sae_stacked_all_prop_file"] = "Results/Output_IHDP/SAE_stacked_all_Prop_score_{0}.csv"
+            run_parameters["sae_stacked_cur_prop_file"] = "Results/Output_IHDP/SAE_stacked_cur_Prop_score_{0}.csv"
+        
+            run_parameters["sae_e2e_iter_file"] = "Results/Output_IHDP/ITE/ITE_SAE_E2E_iter_{0}.csv"
+            run_parameters["sae_stacked_all_iter_file"] = "Results/Output_IHDP/ITE/ITE_SAE_stacked_all_iter_{0}.csv"
+            run_parameters["sae_stacked_cur_iter_file"] = "Results/Output_IHDP/ITE/ITE_SAE_stacked_cur_Prop_iter_{0}.csv"
+        
+            run_parameters["lr_prop_file"] = "Results/Output_IHDP/LR_Prop_score_{0}.csv"
+            run_parameters["lr_iter_file"] = "Results/Output_IHDP/ITE/ITE_LR_iter_{0}.csv"
+        
+            run_parameters["lr_lasso_prop_file"] = "Results/Output_IHDP/LR_lasso_Prop_score_{0}.csv"
+            run_parameters["lr_lasso_iter_file"] = "Results/Output_IHDP/ITE/ITE_LR_Lasso_iter_{0}.csv"
+        
+            run_parameters["summary_file_name"] = "Results/Logs/summary_results_ihdp.txt"
+            run_parameters["is_synthetic"] = False
+        
         elif running_mode == "synthetic_data":
             run_parameters["input_nodes"] = 225
             run_parameters["consolidated_file_path"] = "Results/Output_Augmented/Results_consolidated_mmd.csv"
@@ -280,6 +288,11 @@ class Experiments:
     def load_data(running_mode, dL, train_path, test_path, iter_id):
         if running_mode == "original_data":
             return dL.preprocess_data_from_csv(train_path, test_path, iter_id)
-
+    
         elif running_mode == "synthetic_data":
             return dL.preprocess_data_from_csv_augmented(train_path, test_path, iter_id)
+    
+        elif running_mode == "ihdp":
+            # Custom loader for IHDP
+            train_X, test_X, train_T, test_T, *_ = dL.load_ihdp_npz_data(train_path, test_path, iter_id)
+            return train_X, test_X, train_T, test_T
