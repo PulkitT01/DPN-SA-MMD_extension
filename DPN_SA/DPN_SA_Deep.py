@@ -615,9 +615,9 @@ class DPN_SA_Deep:
         t_0 = np.zeros(data_loader_dict["control_data"][0].shape[0])
 
         tensor_treated = \
-            Utils.create_tensors_from_tuple_test(data_loader_dict["treated_data"], t_1)
+            Utils.create_tensors_from_tuple_test(data_loader_dict["treated_data"], t_1, False) #CHANGE TO TRUE FOR JOBS
         tensor_control = \
-            Utils.create_tensors_from_tuple_test(data_loader_dict["control_data"], t_0)
+            Utils.create_tensors_from_tuple_test(data_loader_dict["control_data"], t_0, False) #CHANGE TO TRUE FOR JOBS
 
         DCN_test_parameters = {
             "treated_set": tensor_treated,
