@@ -1,26 +1,3 @@
-"""
-MIT License
-
-Copyright (c) 2020 Shantanu Ghosh
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-"""
 from datetime import datetime
 
 import numpy as np
@@ -649,8 +626,8 @@ class DPN_SA_Deep:
         }
 
         dcn = DCN_network()
-        dcn_pd_models_eval_dict = dcn.eval(DCN_test_parameters, device, input_nodes)
-
+        dcn_pd_models_eval_dict = dcn.eval(DCN_test_parameters, device, input_nodes, has_e=False) # CHANGE TO TRUE FOR JOBS DATASET
+        
         ate_pred, att_pred, bias_att, atc_pred, policy_value, \
         policy_risk, err_fact = \
             self.__process_evaluated_metric(
