@@ -345,8 +345,8 @@ class DPN_SA_Deep:
         }
 
         dcn = DCN_network()
-        dcn_pd_models_eval_dict = dcn.eval(DCN_test_parameters, device, input_nodes)
-
+        dcn_pd_models_eval_dict = dcn.eval(DCN_test_parameters, device, input_nodes, has_e=False) # CHANGE TO TRUE FOR JOBS DATASET
+        
         ate_pred, att_pred, bias_att, atc_pred, policy_value, \
         policy_risk, err_fact = \
             self.__process_evaluated_metric(
