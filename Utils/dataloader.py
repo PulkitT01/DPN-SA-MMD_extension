@@ -212,32 +212,32 @@ class DataLoader:
         return np_df_X, np_ps_score, np_df_Y_f, np_df_Y_cf
 
     def load_ihdp_npz_data(self, train_path, test_path, iter_id):
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-
-    train_arr = np.load(train_path)
-    test_arr = np.load(test_path)
-
-    np_train_X = torch.tensor(train_arr['x'][:, :, iter_id], dtype=torch.float32).to(device)
-    np_train_T = Utils.convert_to_col_vector(train_arr['t'][:, iter_id])
-    np_train_T = torch.tensor(np_train_T, dtype=torch.float32).to(device)
-    np_train_yf = Utils.convert_to_col_vector(train_arr['yf'][:, iter_id])
-    np_train_yf = torch.tensor(np_train_yf, dtype=torch.float32).to(device)
-
-    # Optional: also load counterfactual and true ATE if needed
-    np_train_ycf = torch.tensor(train_arr['ycf'][:, iter_id], dtype=torch.float32).unsqueeze(1).to(device)
-    mu0 = torch.tensor(train_arr['mu0'][:, iter_id], dtype=torch.float32).unsqueeze(1).to(device)
-    mu1 = torch.tensor(train_arr['mu1'][:, iter_id], dtype=torch.float32).unsqueeze(1).to(device)
-
-    # Combine inputs — do NOT add e (not available)
-    train_X = torch.cat((np_train_X, np_train_yf), dim=1)
-
-    np_test_X = torch.tensor(test_arr['x'][:, :, iter_id], dtype=torch.float32).to(device)
-    np_test_T = Utils.convert_to_col_vector(test_arr['t'][:, iter_id])
-    np_test_T = torch.tensor(np_test_T, dtype=torch.float32).to(device)
-    np_test_yf = Utils.convert_to_col_vector(test_arr['yf'][:, iter_id])
-    np_test_yf = torch.tensor(np_test_yf, dtype=torch.float32).to(device)
-
-    test_X = torch.cat((np_test_X, np_test_yf), dim=1)
+        device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    
+        train_arr = np.load(train_path)
+        test_arr = np.load(test_path)
+    
+        np_train_X = torch.tensor(train_arr['x'][:, :, iter_id], dtype=torch.float32).to(device)
+        np_train_T = Utils.convert_to_col_vector(train_arr['t'][:, iter_id])
+        np_train_T = torch.tensor(np_train_T, dtype=torch.float32).to(device)
+        np_train_yf = Utils.convert_to_col_vector(train_arr['yf'][:, iter_id])
+        np_train_yf = torch.tensor(np_train_yf, dtype=torch.float32).to(device)
+    
+        # Optional: also load counterfactual and true ATE if needed
+        np_train_ycf = torch.tensor(train_arr['ycf'][:, iter_id], dtype=torch.float32).unsqueeze(1).to(device)
+        mu0 = torch.tensor(train_arr['mu0'][:, iter_id], dtype=torch.float32).unsqueeze(1).to(device)
+        mu1 = torch.tensor(train_arr['mu1'][:, iter_id], dtype=torch.float32).unsqueeze(1).to(device)
+    
+        # Combine inputs — do NOT add e (not available)
+        train_X = torch.cat((np_train_X, np_train_yf), dim=1)
+    
+        np_test_X = torch.tensor(test_arr['x'][:, :, iter_id], dtype=torch.float32).to(device)
+        np_test_T = Utils.convert_to_col_vector(test_arr['t'][:, iter_id])
+        np_test_T = torch.tensor(np_test_T, dtype=torch.float32).to(device)
+        np_test_yf = Utils.convert_to_col_vector(test_arr['yf'][:, iter_id])
+        np_test_yf = torch.tensor(np_test_yf, dtype=torch.float32).to(device)
+    
+        test_X = torch.cat((np_test_X, np_test_yf), dim=1)
 
     print(f"IHDP Train X: {train_X.shape}, T: {np_train_T.shape}")
     print(f"IHDP Test  X: {test_X.shape}, T: {np_test_T.shape}")
