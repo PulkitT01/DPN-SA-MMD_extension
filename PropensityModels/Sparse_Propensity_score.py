@@ -216,6 +216,7 @@ class Sparse_Propensity_score:
                 covariates = covariates.to(device)
                 covariates = covariates[:, :]
                 train_set_size += covariates.size(0)
+                print(f"covariates shape just before SAE forward pass: {covariates.shape}")
 
                 treatment_pred = network(covariates)
                 mse_loss = criterion(treatment_pred, covariates)
