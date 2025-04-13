@@ -239,7 +239,7 @@ class DataLoader:
     
         test_X = torch.cat((np_test_X, np_test_yf), dim=1)
 
-    print(f"IHDP Train X: {train_X.shape}, T: {np_train_T.shape}")
-    print(f"IHDP Test  X: {test_X.shape}, T: {np_test_T.shape}")
-
-    return train_X, test_X, np_train_T, np_test_T, np_train_ycf, mu0, mu1
+        print(f"IHDP Train X: {train_X.shape}, T: {np_train_T.shape}")
+        print(f"IHDP Test  X: {test_X.shape}, T: {np_test_T.shape}")
+    
+        return train_X, test_X, np_train_T, np_test_T, np_train_ycf, mu0, mu1
