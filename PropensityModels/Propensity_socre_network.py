@@ -1,27 +1,3 @@
-"""
-MIT License
-
-Copyright (c) 2020 Shantanu Ghosh
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-"""
-
 import torch
 import torch.nn.functional as F
 import torch.optim as optim
@@ -74,9 +50,9 @@ class Propensity_socre_network:
             for batch in data_loader_train:
                 covariates, treatment = batch
                 covariates = covariates.to(device)
-                treatment = treatment.squeeze().to(device, dtype=torch.int64)
+                treatment = treatment.view(-1).long().to(device)
 
-                covariates = covariates[:, :-2]
+                #covariates = covariates[:, :-2]
                 train_set_size += covariates.size(0)
 
                 treatment_pred = network(covariates)
@@ -89,6 +65,10 @@ class Propensity_socre_network:
                 loss.backward()
                 optimizer.step()
 
+                #debug print
+                print("treatment shape:", treatment.shape)
+                print("treatment dtype:", treatment.dtype)
+                print("treatment unique values:", torch.unique(treatment))
                 total_loss += loss.item()
                 total_correct += Utils.get_num_correct(treatment_pred, treatment)
 
@@ -116,8 +96,8 @@ class Propensity_socre_network:
         for batch in data_loader:
             covariates, treatment = batch
             covariates = covariates.to(device)
-            covariates = covariates[:, :-2]
-            treatment = treatment.squeeze().to(device)
+            #covariates = covariates[:, :-2]
+            treatment = treatment.view(-1).long().to(device)
 
             eval_set_size += covariates.size(0)
 
@@ -151,8 +131,8 @@ class Propensity_socre_network:
             prop_dict = {}
             covariates, treatment = batch
             covariates = covariates.to(device)
-            covariates = covariates[:, :-2]
-            treatment = treatment.squeeze().to(device)
+            #covariates = covariates[:, :-2]
+            treatment = treatment.view(-1).long().to(device)
 
             eval_set_size += covariates.size(0)
 
