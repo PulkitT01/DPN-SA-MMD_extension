@@ -195,7 +195,7 @@ class DataLoader:
             df_X = df.iloc[:, 0:75]
         else:
             # for original dataset #covariates: 17
-            df_X = df.iloc[:, 0:17]
+            df_X = df.iloc[:, 0:25]
 
         ps_score = df.iloc[:, -1]
         df_Y_f = df.iloc[:, -3]

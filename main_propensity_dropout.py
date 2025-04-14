@@ -5,4 +5,4 @@ from DCN.Model25_10_25 import Model_25_1_25
 
 if __name__ == '__main__':
     print("Using IHDP data")
-    Experiments().run_all_experiments(iterations=10, running_mode="ihdp")
+    Experiments().run_all_experiments(iterations=1, running_mode="ihdp")
