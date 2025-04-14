@@ -50,7 +50,7 @@ class Propensity_socre_network:
             for batch in data_loader_train:
                 covariates, treatment = batch
                 covariates = covariates.to(device)
-                treatment = treatment.squeeze().to(device, dtype=torch.int64)
+                treatment = treatment.view(-1).long().to(device)
 
                 #covariates = covariates[:, :-2]
                 train_set_size += covariates.size(0)
@@ -64,6 +64,10 @@ class Propensity_socre_network:
                 optimizer.zero_grad()
                 loss.backward()
                 optimizer.step()
+
+                print("treatment shape:", treatment.shape)
+                print("treatment dtype:", treatment.dtype)
+                print("treatment unique values:", torch.unique(treatment))
 
                 total_loss += loss.item()
                 total_correct += Utils.get_num_correct(treatment_pred, treatment)
@@ -93,7 +97,7 @@ class Propensity_socre_network:
             covariates, treatment = batch
             covariates = covariates.to(device)
             #covariates = covariates[:, :-2]
-            treatment = treatment.squeeze().to(device)
+            treatment = treatment.view(-1).long().to(device)
 
             eval_set_size += covariates.size(0)
 
@@ -128,7 +132,7 @@ class Propensity_socre_network:
             covariates, treatment = batch
             covariates = covariates.to(device)
             #covariates = covariates[:, :-2]
-            treatment = treatment.squeeze().to(device)
+            treatment = treatment.view(-1).long().to(device)
 
             eval_set_size += covariates.size(0)
 
