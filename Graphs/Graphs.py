@@ -11,7 +11,7 @@ from Utils.dataloader import DataLoader
 class Graphs:
     def draw_scatter_plots(self):
         device = Utils.get_device()
-        train_path = "Dataset/ihdp_jobs_style.train.npz"  # SWITCH TO JOBS WHILE RUNNING JOBS DATASET
+        train_path = "Dataset/ihdp_npci_1-100.train.npz"  
         dL = DataLoader()
         np_covariates_X, np_covariates_Y = dL.preprocess_for_graphs(train_path)
         ps_train_set = dL.convert_to_tensor(np_covariates_X, np_covariates_Y)
@@ -72,7 +72,7 @@ class Graphs:
         self.draw(treated_ps_list, control_ps_list,
                   label_treated="Treated", label_control="Control",
                   fig_name=f"{output_dir}/Fig_NN",
-                  title="Jobs: DCN-PD", max_limit=500)
+                  title="ihdp: DCN-PD", max_limit=500)
         return ps_score_list_NN
 
     def __train_propensity_net_SAE(self, ps_train_set, device):
@@ -108,7 +108,7 @@ class Graphs:
         self.draw(treated_ps_list, control_ps_list,
                   label_treated="Treated", label_control="Control",
                   fig_name=f"{output_dir}/Fig_SAE",
-                  title="Jobs: DPN-SA End to End", max_limit=500)
+                  title="ihdp: DPN-SA End to End", max_limit=500)
         return ps_score_list_SAE
 
     @staticmethod
@@ -129,7 +129,7 @@ class Graphs:
         self.draw(treated_ps_list, control_ps_list,
                   label_treated="Treated", label_control="Control",
                   fig_name=f"{output_dir}/Fig_LR_Lasso",
-                  title="Jobs: LR Lasso", max_limit=500)
+                  title="ihdp: LR Lasso", max_limit=500)
         return treated_ps_list
 
     @staticmethod

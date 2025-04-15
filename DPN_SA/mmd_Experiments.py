@@ -11,8 +11,8 @@ class Experiments:
     def run_all_experiments(self, iterations, running_mode):
 
         if running_mode == "ihdp":
-            train_path = "Dataset/ihdp_jobs_style.train.npz"
-            test_path = "Dataset/ihdp_jobs_style.test.npz"
+            train_path = "Dataset/ihdp_npci_1-100.train.npz"
+            test_path = "Dataset/ihdp_npci_1-100.test.npz"
         else:
             train_path = "Dataset/jobs_DW_bin.new.10.train.npz"
             test_path = "Dataset/jobs_DW_bin.new.10.test.npz"
