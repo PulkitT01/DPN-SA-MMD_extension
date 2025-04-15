@@ -10,8 +10,12 @@ from Utils.dataloader import DataLoader
 class Experiments:
     def run_all_experiments(self, iterations, running_mode):
 
-        train_path = "Dataset/jobs_DW_bin.new.10.train.npz"
-        test_path = "Dataset/jobs_DW_bin.new.10.test.npz"
+        if running_mode == "ihdp":
+            train_path = "Dataset/ihdp_jobs_style.train.npz"
+            test_path = "Dataset/ihdp_jobs_style.test.npz"
+        else:
+            train_path = "Dataset/jobs_DW_bin.new.10.train.npz"
+            test_path = "Dataset/jobs_DW_bin.new.10.test.npz"
         split_size = 0.8
         device = Utils.get_device()
         print(device)
@@ -241,7 +245,7 @@ class Experiments:
     @staticmethod
     def __get_run_parameters(running_mode):
         run_parameters = {}
-        if running_mode == "original_data":
+        if running_mode == "jobs":
             run_parameters["input_nodes"] = 17
             run_parameters["consolidated_file_path"] = "Results/Output/Results_consolidated_mmd.csv"
 
@@ -257,6 +261,30 @@ class Experiments:
             run_parameters["summary_file_name"] = "Results/Logs/summary_results_mmd.txt"
             run_parameters["is_synthetic"] = False
 
+        elif running_mode == "ihdp":
+            run_parameters["input_nodes"] = 25
+            run_parameters["consolidated_file_path"] = "Results/Output_IHDP/Results_consolidated.csv"
+        
+            run_parameters["nn_prop_file"] = "Results/Output_IHDP/NN_Prop_score_{0}.csv"
+            run_parameters["nn_iter_file"] = "Results/Output_IHDP/ITE/ITE_NN_iter_{0}.csv"
+        
+            run_parameters["sae_e2e_prop_file"] = "Results/Output_IHDP/SAE_E2E_Prop_score_{0}.csv"
+            run_parameters["sae_stacked_all_prop_file"] = "Results/Output_IHDP/SAE_stacked_all_Prop_score_{0}.csv"
+            run_parameters["sae_stacked_cur_prop_file"] = "Results/Output_IHDP/SAE_stacked_cur_Prop_score_{0}.csv"
+        
+            run_parameters["sae_e2e_iter_file"] = "Results/Output_IHDP/ITE/ITE_SAE_E2E_iter_{0}.csv"
+            run_parameters["sae_stacked_all_iter_file"] = "Results/Output_IHDP/ITE/ITE_SAE_stacked_all_iter_{0}.csv"
+            run_parameters["sae_stacked_cur_iter_file"] = "Results/Output_IHDP/ITE/ITE_SAE_stacked_cur_Prop_iter_{0}.csv"
+        
+            run_parameters["lr_prop_file"] = "Results/Output_IHDP/LR_Prop_score_{0}.csv"
+            run_parameters["lr_iter_file"] = "Results/Output_IHDP/ITE/ITE_LR_iter_{0}.csv"
+        
+            run_parameters["lr_lasso_prop_file"] = "Results/Output_IHDP/LR_lasso_Prop_score_{0}.csv"
+            run_parameters["lr_lasso_iter_file"] = "Results/Output_IHDP/ITE/ITE_LR_Lasso_iter_{0}.csv"
+        
+            run_parameters["summary_file_name"] = "Results/Logs/summary_results_ihdp.txt"
+            run_parameters["is_synthetic"] = False
+        
         elif running_mode == "synthetic_data":
             run_parameters["input_nodes"] = 225
             run_parameters["consolidated_file_path"] = "Results/Output_Augmented/Results_consolidated_mmd.csv"

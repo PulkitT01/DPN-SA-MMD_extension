@@ -1,27 +1,3 @@
-"""
-MIT License
-
-Copyright (c) 2020 Shantanu Ghosh
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-"""
-
 from collections import OrderedDict
 
 import numpy as np
@@ -34,8 +10,12 @@ from Utils.dataloader import DataLoader
 class Experiments:
     def run_all_experiments(self, iterations, running_mode):
 
-        train_path = "Dataset/jobs_DW_bin.new.10.train.npz"
-        test_path = "Dataset/jobs_DW_bin.new.10.test.npz"
+        if running_mode == "ihdp":
+            train_path = "Dataset/ihdp_jobs_style.train.npz"
+            test_path = "Dataset/ihdp_jobs_style.test.npz"
+        else:
+            train_path = "Dataset/jobs_DW_bin.new.10.train.npz"
+            test_path = "Dataset/jobs_DW_bin.new.10.test.npz"
         split_size = 0.8
         device = Utils.get_device()
         print(device)
@@ -92,27 +72,6 @@ class Experiments:
                                    LR_model,
                                    LR_model_lasso,
                                    device, run_parameters)
-
-            # MSE_SAE_e2e = reply["MSE_SAE_e2e"]
-            # MSE_SAE_stacked_all_layer_active = reply["MSE_SAE_stacked_all_layer_active"]
-            # MSE_SAE_stacked_cur_layer_active = reply["MSE_SAE_stacked_cur_layer_active"]
-            # MSE_NN = reply["MSE_NN"]
-            # MSE_LR = reply["MSE_LR"]
-            # MSE_LR_lasso = reply["MSE_LR_Lasso"]
-            #
-            # true_ATE_NN = reply["true_ATE_NN"]
-            # true_ATE_SAE_e2e = reply["true_ATE_SAE_e2e"]
-            # true_ATE_SAE_stacked_all_layer_active = reply["true_ATE_SAE_stacked_all_layer_active"]
-            # true_ATE_SAE_stacked_cur_layer_active = reply["true_ATE_SAE_stacked_cur_layer_active"]
-            # true_ATE_LR = reply["true_ATE_LR"]
-            # true_ATE_LR_Lasso = reply["true_ATE_LR_Lasso"]
-            #
-            # predicted_ATE_NN = reply["predicted_ATE_NN"]
-            # predicted_ATE_SAE_e2e = reply["predicted_ATE_SAE_e2e"]
-            # predicted_ATE_SAE_stacked_all_layer_active = reply["predicted_ATE_SAE_stacked_all_layer_active"]
-            # predicted_ATE_SAE_stacked_cur_layer_active = reply["predicted_ATE_SAE_stacked_cur_layer_active"]
-            # predicted_ATE_LR = reply["predicted_ATE_LR"]
-            # predicted_ATE_LR_Lasso = reply["predicted_ATE_LR_Lasso"]
 
             NN_ate_pred = reply["NN_ate_pred"]
             NN_att_pred = reply["NN_att_pred"]
@@ -390,7 +349,7 @@ class Experiments:
     @staticmethod
     def __get_run_parameters(running_mode):
         run_parameters = {}
-        if running_mode == "original_data":
+        if running_mode == "jobs":
             run_parameters["input_nodes"] = 17
             run_parameters["consolidated_file_path"] = "Results/Output/Results_consolidated.csv"
 
@@ -416,6 +375,30 @@ class Experiments:
             run_parameters["summary_file_name"] = "Results/Logs/summary_results.txt"
             run_parameters["is_synthetic"] = False
 
+        elif running_mode == "ihdp":
+            run_parameters["input_nodes"] = 25
+            run_parameters["consolidated_file_path"] = "Results/Output_IHDP/Results_consolidated.csv"
+        
+            run_parameters["nn_prop_file"] = "Results/Output_IHDP/NN_Prop_score_{0}.csv"
+            run_parameters["nn_iter_file"] = "Results/Output_IHDP/ITE/ITE_NN_iter_{0}.csv"
+        
+            run_parameters["sae_e2e_prop_file"] = "Results/Output_IHDP/SAE_E2E_Prop_score_{0}.csv"
+            run_parameters["sae_stacked_all_prop_file"] = "Results/Output_IHDP/SAE_stacked_all_Prop_score_{0}.csv"
+            run_parameters["sae_stacked_cur_prop_file"] = "Results/Output_IHDP/SAE_stacked_cur_Prop_score_{0}.csv"
+        
+            run_parameters["sae_e2e_iter_file"] = "Results/Output_IHDP/ITE/ITE_SAE_E2E_iter_{0}.csv"
+            run_parameters["sae_stacked_all_iter_file"] = "Results/Output_IHDP/ITE/ITE_SAE_stacked_all_iter_{0}.csv"
+            run_parameters["sae_stacked_cur_iter_file"] = "Results/Output_IHDP/ITE/ITE_SAE_stacked_cur_Prop_iter_{0}.csv"
+        
+            run_parameters["lr_prop_file"] = "Results/Output_IHDP/LR_Prop_score_{0}.csv"
+            run_parameters["lr_iter_file"] = "Results/Output_IHDP/ITE/ITE_LR_iter_{0}.csv"
+        
+            run_parameters["lr_lasso_prop_file"] = "Results/Output_IHDP/LR_lasso_Prop_score_{0}.csv"
+            run_parameters["lr_lasso_iter_file"] = "Results/Output_IHDP/ITE/ITE_LR_Lasso_iter_{0}.csv"
+        
+            run_parameters["summary_file_name"] = "Results/Logs/summary_results_ihdp.txt"
+            run_parameters["is_synthetic"] = False
+        
         elif running_mode == "synthetic_data":
             run_parameters["input_nodes"] = 225
             run_parameters["consolidated_file_path"] = "Results/Output_Augmented/Results_consolidated.csv"
