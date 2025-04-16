@@ -44,7 +44,7 @@ class Graphs:
             "batch_size": 32,
             "shuffle": True,
             "train_set": ps_train_set,
-            "input_nodes": 17,
+            "input_nodes": 25,
             "model_save_path": "./Propensity_Model/Graph_NN_PS_model_epoch_{0}_lr_{1}.pth"
         }
         # ps using NN
@@ -55,7 +55,7 @@ class Graphs:
         # eval
         eval_parameters_NN = {
             "eval_set": ps_train_set,
-            "input_nodes": 17,
+            "input_nodes": 25,
             "model_path": "./Propensity_Model/Graph_NN_PS_model_epoch_50_lr_0.001.pth"
         }
 
@@ -86,7 +86,7 @@ class Graphs:
             "sparsity_probability": 0.8,
             "weight_decay": 0.0003,
             "BETA": 0.1,
-            "input_nodes": 17,
+            "input_nodes": 25,
             "model_save_path": "./Propensity_Model/SAE_PS_model_iter_id_epoch_{0}_lr_{1}.pth"
         }
 
