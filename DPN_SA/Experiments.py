@@ -430,8 +430,9 @@ class Experiments:
 
     @staticmethod
     def load_data(running_mode, dL, train_path, test_path, iter_id):
-        if running_mode == "original_data":
-            return dL.preprocess_data_from_csv(train_path, test_path, iter_id)
-
-        elif running_mode == "synthetic_data":
+        
+        if running_mode == "synthetic_data":
             return dL.preprocess_data_from_csv_augmented(train_path, test_path, iter_id)
+    
+        elif running_mode in ["ihdp", "jobs"]:
+            return dL.preprocess_data_from_csv(train_path, test_path, iter_id)
