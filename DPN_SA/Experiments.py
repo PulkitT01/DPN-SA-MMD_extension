@@ -351,6 +351,7 @@ class Experiments:
         run_parameters = {}
         if running_mode == "jobs":
             run_parameters["input_nodes"] = 17
+            run_parameters["running_mode"] = running_mode
             run_parameters["consolidated_file_path"] = "Results/Output/Results_consolidated.csv"
 
             # NN
@@ -377,6 +378,7 @@ class Experiments:
 
         elif running_mode == "ihdp":
             run_parameters["input_nodes"] = 25
+            run_parameters["running_mode"] = running_mode
             run_parameters["consolidated_file_path"] = "Results/Output_IHDP/Results_consolidated.csv"
         
             run_parameters["nn_prop_file"] = "Results/Output_IHDP/NN_Prop_score_{0}.csv"
@@ -401,6 +403,7 @@ class Experiments:
         
         elif running_mode == "synthetic_data":
             run_parameters["input_nodes"] = 225
+            run_parameters["running_mode"] = running_mode
             run_parameters["consolidated_file_path"] = "Results/Output_Augmented/Results_consolidated.csv"
 
             # NN

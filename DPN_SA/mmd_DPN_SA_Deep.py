@@ -31,7 +31,7 @@ class DPN_SA_Deep:
                                             dL,
                                             iter_id, device,
                                             run_parameters["input_nodes"],
-                                            is_synthetic)
+                                            is_synthetic, run_parameters["running_mode"])
 
         return {
             "sparse_classifier": sparse_classifier,
@@ -94,7 +94,7 @@ class DPN_SA_Deep:
                                 ps_test_set, sparse_classifier, model_path_e2e,
                                 propensity_score_save_path_e2e, ITE_save_path_e2e,
                                 run_parameters["is_synthetic"],
-                                run_parameters["input_nodes"])
+                                run_parameters["input_nodes"], run_parameters["running_mode"])
 
         print("############### DCN Testing using SAE Stacked all layer active ###############")
         SAE_stacked_all_layer_active_ate_pred, SAE_stacked_all_layer_active_att_pred, \
@@ -108,7 +108,7 @@ class DPN_SA_Deep:
                                 propensity_score_save_path_stacked_all,
                                 ITE_save_path_stacked_all,
                                 run_parameters["is_synthetic"],
-                                run_parameters["input_nodes"])
+                                run_parameters["input_nodes"], run_parameters["running_mode"])
 
         print("############### DCN Testing using SAE cur layer active ###############")
         SAE_stacked_cur_layer_active_ate_pred, SAE_stacked_cur_layer_active_att_pred, \
@@ -122,7 +122,7 @@ class DPN_SA_Deep:
                                 propensity_score_save_path_stacked_cur,
                                 ITE_save_path_stacked_cur,
                                 run_parameters["is_synthetic"],
-                                run_parameters["input_nodes"])
+                                run_parameters["input_nodes"], run_parameters["running_mode"])
 
         
         return {
@@ -155,7 +155,7 @@ class DPN_SA_Deep:
     def __train_propensity_net_SAE(self,
                                    ps_train_set, np_covariates_X_train, np_covariates_Y_train,
                                    dL,
-                                   iter_id, device, input_nodes, is_synthetic):
+                                   iter_id, device, input_nodes, is_synthetic, running_mode):
         # !!! best parameter list
         train_parameters_SAE = {
             "epochs": 400,
@@ -202,7 +202,7 @@ class DPN_SA_Deep:
         self.__train_DCN_SAE(ps_net_SAE, ps_train_set, device, np_covariates_X_train,
                              np_covariates_Y_train,
                              iter_id, dL, sparse_classifier,
-                             model_path_e2e, input_nodes, is_synthetic)
+                             model_path_e2e, input_nodes, is_synthetic, running_mode)
         end = datetime.now()
         print("SAE E2E start time: =", start)
         print("SAE E2E end time: =", end)
@@ -218,7 +218,7 @@ class DPN_SA_Deep:
         self.__train_DCN_SAE(ps_net_SAE, ps_train_set, device, np_covariates_X_train,
                              np_covariates_Y_train, iter_id, dL,
                              sae_classifier_stacked_all_layer_active,
-                             model_path_stacked_all, input_nodes, is_synthetic)
+                             model_path_stacked_all, input_nodes, is_synthetic, running_mode)
 
         end = datetime.now()
         print("SAE all layer active start time: =", start)
@@ -235,7 +235,7 @@ class DPN_SA_Deep:
         self.__train_DCN_SAE(ps_net_SAE, ps_train_set, device, np_covariates_X_train,
                              np_covariates_Y_train, iter_id, dL,
                              sae_classifier_stacked_cur_layer_active,
-                             model_path_stacked_cur, input_nodes, is_synthetic)
+                             model_path_stacked_cur, input_nodes, is_synthetic, running_mode)
 
         end = datetime.now()
         print("SAE cur layer active start time: =", start)
@@ -252,7 +252,7 @@ class DPN_SA_Deep:
                         np_covariates_Y_train,
                         iter_id, dL, sparse_classifier,
                         model_path,
-                        input_nodes, is_synthetic):
+                        input_nodes, is_synthetic, running_mode):
         # eval propensity network using SAE
         ps_score_list_train_SAE = ps_net_SAE.eval(ps_train_set, device, phase="eval",
                                                   sparse_classifier=sparse_classifier)
@@ -265,10 +265,10 @@ class DPN_SA_Deep:
                                                                is_synthetic)
 
         self.__train_DCN(data_loader_dict_train_SAE,
-                         model_path, dL, device, input_nodes)
+                         model_path, dL, device, input_nodes, running_mode)
 
     
-    def __train_DCN(self, data_loader_dict_train, model_path, dL, device, input_nodes):
+    def __train_DCN(self, data_loader_dict_train, model_path, dL, device, input_nodes, running_mode):
         tensor_treated_train = self.create_tensors_from_tuple(data_loader_dict_train["treated_data"])
         tensor_control_train = self.create_tensors_from_tuple(data_loader_dict_train["control_data"])
 
@@ -281,7 +281,8 @@ class DPN_SA_Deep:
             "treated_set_train": tensor_treated_train,
             "control_set_train": tensor_control_train,
             "model_save_path": model_path,
-            "input_nodes": input_nodes
+            "input_nodes": input_nodes,
+            "running_mode": running_mode
         }
 
         # train DCN network
@@ -304,7 +305,7 @@ class DPN_SA_Deep:
 
     def __test_DCN_SAE(self, iter_id, np_covariates_X_test, np_covariates_Y_test, dL, device,
                        ps_test_set, sparse_classifier, model_path, propensity_score_csv_path,
-                       iter_file, is_synthetic, input_nodes):
+                       iter_file, is_synthetic, input_nodes, running_mode):
         # testing using SAE
         ps_net_SAE = Sparse_Propensity_score()
         ps_score_list_SAE = ps_net_SAE.eval(ps_test_set, device, phase="eval",
@@ -323,12 +324,12 @@ class DPN_SA_Deep:
                                  model_path,
                                  input_nodes,
                                  iter_file,
-                                 iter_id)
+                                 iter_id, running_mode)
         return ate_pred, att_pred, bias_att, atc_pred, policy_value, \
                policy_risk, err_fact
 
 
-    def __do_test_DCN(self, data_loader_dict, dL, device, model_path, input_nodes, iter_file, iter_id):
+    def __do_test_DCN(self, data_loader_dict, dL, device, model_path, input_nodes, iter_file, iter_id, running_mode):
         t_1 = np.ones(data_loader_dict["treated_data"][0].shape[0])
 
         t_0 = np.zeros(data_loader_dict["control_data"][0].shape[0])
@@ -341,7 +342,8 @@ class DPN_SA_Deep:
         DCN_test_parameters = {
             "treated_set": tensor_treated,
             "control_set": tensor_control,
-            "model_save_path": model_path
+            "model_save_path": model_path,
+            "running_mode": running_mode
         }
 
         dcn = DCN_network()

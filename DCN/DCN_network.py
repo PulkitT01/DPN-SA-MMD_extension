@@ -45,7 +45,9 @@ class DCN_network:
                                                                 shuffle=shuffle,
                                                                 num_workers=0)
 
-        network = DCN(training_flag=True, input_nodes=input_nodes).to(device)
+        running_mode = train_parameters.get("running_mode", "jobs").lower()
+        output_dim = 1 if running_mode == "ihdp" else 2
+        network = DCN(training_flag=True, input_nodes=input_nodes, output_dim=output_dim).to(device)
         optimizer = optim.Adam(network.parameters(), lr=lr)
         lossF = nn.MSELoss()
         min_loss = 100000.0
@@ -80,23 +82,18 @@ class DCN_network:
 
                     covariates_X = covariates_X.to(device)
                     ps_score = ps_score.squeeze().to(device)
-                    y_f = y_f.to(device, dtype=torch.int64)
-
                     train_set_size += covariates_X.size(0)
                     y1_hat = network(covariates_X, ps_score)[0]
 
-                    # y_f = y_f.long()
-                    # print(y1_hat.shape)
-                    # print(y_f.shape)
-
-                    print("y_f:", y_f)
-                    print("min:", y_f.min().item(), "max:", y_f.max().item())
-                    print("y1_hat.shape:", y1_hat.shape)
-
-                    if torch.cuda.is_available():
-                        loss = F.cross_entropy(y1_hat.cuda(), y_f.cuda()).to(device)
+                    # Switch between regression and classification
+                    if running_mode == "ihdp":
+                        y_f = y_f.float().to(device)
+                        y1_hat = y1_hat.squeeze()
+                        loss = F.mse_loss(y1_hat, y_f)
                     else:
-                        loss = F.cross_entropy(y1_hat, y_f).to(device)
+                        y_f = y_f.long().to(device)
+                        loss = F.cross_entropy(y1_hat, y_f)
+
                     optimizer.zero_grad()
                     loss.backward()
                     optimizer.step()
@@ -123,16 +120,18 @@ class DCN_network:
                     covariates_X, ps_score, y_f = batch
                     covariates_X = covariates_X.to(device)
                     ps_score = ps_score.squeeze().to(device)
-                    y_f = y_f.to(device, dtype=torch.int64)
-
                     train_set_size += covariates_X.size(0)
-                    y0_hat = network(covariates_X, ps_score)[1]
-                    # treatment_pred[0] -> y1
-                    # treatment_pred[1] -> y0
-                    if torch.cuda.is_available():
-                        loss = F.cross_entropy(y0_hat.cuda(), y_f.cuda()).to(device)
+                    y1_hat = network(covariates_X, ps_score)[0]
+
+                    # Switch between regression and classification
+                    if running_mode == "ihdp":
+                        y_f = y_f.float().to(device)
+                        y1_hat = y1_hat.squeeze()
+                        loss = F.mse_loss(y1_hat, y_f)
                     else:
-                        loss = F.cross_entropy(y0_hat, y_f).to(device)
+                        y_f = y_f.long().to(device)
+                        loss = F.cross_entropy(y1_hat, y_f)
+
                     optimizer.zero_grad()
                     loss.backward()
                     optimizer.step()
@@ -156,83 +155,64 @@ class DCN_network:
         treated_set = eval_parameters["treated_set"]
         control_set = eval_parameters["control_set"]
         model_path = eval_parameters["model_save_path"]
-        network = DCN(training_flag=False, input_nodes=input_nodes).to(device)
-        # Add weights_only=True to get rid of the warning
+        running_mode = eval_parameters.get("running_mode", "jobs").lower()
+
+        output_dim = 1 if running_mode == "ihdp" else 2
+        network = DCN(training_flag=False, input_nodes=input_nodes, output_dim=output_dim).to(device)
+
         network.load_state_dict(torch.load(model_path, map_location=device, weights_only=True))
         network.eval()
-        treated_data_loader = torch.utils.data.DataLoader(treated_set,
-                                                          shuffle=False, num_workers=0)
-        control_data_loader = torch.utils.data.DataLoader(control_set,
-                                                          shuffle=False, num_workers=0)
 
-        err_treated_list = []
-        err_control_list = []
-        true_ITE_list = []
-        predicted_ITE_list = []
+        treated_data_loader = torch.utils.data.DataLoader(treated_set, shuffle=False, num_workers=0)
+        control_data_loader = torch.utils.data.DataLoader(control_set, shuffle=False, num_workers=0)
 
         ITE_dict_list = []
-
         y_f_list = []
         y1_hat_list = []
         y0_hat_list = []
         e_list = []
         T_list = []
+        predicted_ITE_list = []
 
-        for batch in treated_data_loader:
-            covariates_X, ps_score, y_f, t, e = batch
-            covariates_X = covariates_X.to(device)
-            ps_score = ps_score.squeeze().to(device)
-            treatment_pred = network(covariates_X, ps_score)
+        def process_batch(data_loader, is_treated):
+            for batch in data_loader:
+                covariates_X, ps_score, y_f, t, e = batch
+                covariates_X = covariates_X.to(device)
+                ps_score = ps_score.squeeze().to(device)
+                y_f = y_f.to(device)
 
-            pred_y1_hat = treatment_pred[0]
-            pred_y0_hat = treatment_pred[1]
+                y1_pred, y0_pred = network(covariates_X, ps_score)
 
-            _, y1_hat = torch.max(pred_y1_hat.data, 1)
-            _, y0_hat = torch.max(pred_y0_hat.data, 1)
+                if running_mode == "ihdp":
+                    # Regression output: use directly
+                    y1_hat = y1_pred.squeeze()
+                    y0_hat = y0_pred.squeeze()
+                else:
+                    # Classification output: take argmax
+                    _, y1_hat = torch.max(y1_pred.data, 1)
+                    _, y0_hat = torch.max(y0_pred.data, 1)
 
-            predicted_ITE = y1_hat - y0_hat
-            ITE_dict_list.append(self.create_ITE_Dict(covariates_X,
-                                                      ps_score.item(), y_f.item(),
-                                                      y1_hat.item(),
-                                                      y0_hat.item(),
-                                                      predicted_ITE.item()))
-            y_f_list.append(y_f.item())
-            y1_hat_list.append(y1_hat.item())
-            y0_hat_list.append(y0_hat.item())
-            e_list.append(e.item())
-            T_list.append(t)
-            predicted_ITE_list.append(predicted_ITE.item())
+                predicted_ITE = y1_hat - y0_hat
 
-        for batch in control_data_loader:
-            covariates_X, ps_score, y_f, t, e = batch
-            covariates_X = covariates_X.to(device)
-            ps_score = ps_score.squeeze().to(device)
+                ITE_dict_list.append(self.create_ITE_Dict(
+                    covariates_X,
+                    ps_score.item(),
+                    y_f.item(),
+                    y1_hat.item(),
+                    y0_hat.item(),
+                    predicted_ITE.item()
+                ))
 
-            treatment_pred = network(covariates_X, ps_score)
+                y_f_list.append(y_f.item())
+                y1_hat_list.append(y1_hat.item())
+                y0_hat_list.append(y0_hat.item())
+                predicted_ITE_list.append(predicted_ITE.item())
+                e_list.append(e.item())
+                T_list.append(t)
 
-            pred_y1_hat = treatment_pred[0]
-            pred_y0_hat = treatment_pred[1]
+        process_batch(treated_data_loader, is_treated=True)
+        process_batch(control_data_loader, is_treated=False)
 
-            _, y1_hat = torch.max(pred_y1_hat.data, 1)
-            _, y0_hat = torch.max(pred_y0_hat.data, 1)
-
-            predicted_ITE = y1_hat - y0_hat
-
-            ITE_dict_list.append(self.create_ITE_Dict(covariates_X,
-                                                      ps_score.item(), y_f.item(),
-                                                      y1_hat.item(),
-                                                      y0_hat.item(),
-                                                      predicted_ITE.item()))
-
-            y_f_list.append(y_f.item())
-            y1_hat_list.append(y1_hat.item())
-            y0_hat_list.append(y0_hat.item())
-            predicted_ITE_list.append(predicted_ITE.item())
-            e_list.append(e.item())
-            T_list.append(t)
-
-        # print(err_treated_list)
-        # print(err_control_list)
         return {
             "predicted_ITE": predicted_ITE_list,
             "ITE_dict_list": ITE_dict_list,

@@ -6,6 +6,6 @@ from Graphs.Graphs import Graphs
 
 if __name__ == '__main__':
     print("Using original data")
-    Experiments().run_all_experiments(iterations=10, running_mode="jobs")
+    Experiments().run_all_experiments(iterations=1, running_mode="ihdp")
     # Model_25_1_25().run_all_expeiments()
     # Graphs().draw_scatter_plots()

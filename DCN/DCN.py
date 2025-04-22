@@ -7,7 +7,7 @@ from Utils.Utils import Utils
 
 
 class DCN(nn.Module):
-    def __init__(self, training_flag, input_nodes):
+    def __init__(self, training_flag, input_nodes, output_dim=2):
         super(DCN, self).__init__()
         self.training = training_flag
 
@@ -25,7 +25,7 @@ class DCN(nn.Module):
         self.hidden2_Y1 = nn.Linear(in_features=200, out_features=200)
         nn.init.xavier_uniform_(self.hidden2_Y1.weight)
 
-        self.out_Y1 = nn.Linear(in_features=200, out_features=2)
+        self.out_Y1 = nn.Linear(in_features=200, out_features=output_dim)
         nn.init.xavier_uniform_(self.out_Y1.weight)
 
         # potential outcome1 Y(0)
@@ -35,7 +35,7 @@ class DCN(nn.Module):
         self.hidden2_Y0 = nn.Linear(in_features=200, out_features=200)
         nn.init.xavier_uniform_(self.hidden2_Y0.weight)
 
-        self.out_Y0 = nn.Linear(in_features=200, out_features=2)
+        self.out_Y0 = nn.Linear(in_features=200, out_features=output_dim)
         nn.init.xavier_uniform_(self.out_Y0.weight)
 
     def forward(self, x, ps_score):
