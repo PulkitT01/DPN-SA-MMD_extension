@@ -38,7 +38,6 @@ class DPN_SA_Deep:
 
         # using SAE
         start = datetime.now()
-        sparse_classifier, \
         sparse_classifier, sae_classifier_stacked_all_layer_active, sae_classifier_stacked_cur_layer_active = \
             self.__train_propensity_net_SAE(ps_train_set,
                                     np_covariates_X_train,
