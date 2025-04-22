@@ -87,8 +87,8 @@ class DCN_network:
 
                     # Switch between regression and classification
                     if running_mode == "ihdp":
-                        y_f = y_f.float().to(device)
-                        y1_hat = y1_hat.squeeze()
+                        y_f = y_f.float().to(device).view(-1)
+                        y1_hat = y1_hat.view(-1)
                         loss = F.mse_loss(y1_hat, y_f)
                     else:
                         y_f = y_f.long().to(device)
@@ -125,8 +125,8 @@ class DCN_network:
 
                     # Switch between regression and classification
                     if running_mode == "ihdp":
-                        y_f = y_f.float().to(device)
-                        y1_hat = y1_hat.squeeze()
+                        y_f = y_f.float().to(device).view(-1)
+                        y1_hat = y1_hat.view(-1)
                         loss = F.mse_loss(y1_hat, y_f)
                     else:
                         y_f = y_f.long().to(device)
