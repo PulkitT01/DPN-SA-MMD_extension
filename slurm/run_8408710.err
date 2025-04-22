@@ -1,0 +1,12 @@
+/gpfs/bwfor/home/tu/tu_tu/tu_wwdth01/DPN-SA-MMD_extension/venv/lib/python3.10/site-packages/numpy/_core/fromnumeric.py:3904: RuntimeWarning: Mean of empty slice.
+  return _methods._mean(a, axis=axis, dtype=dtype,
+/gpfs/bwfor/home/tu/tu_tu/tu_wwdth01/DPN-SA-MMD_extension/venv/lib/python3.10/site-packages/numpy/_core/_methods.py:147: RuntimeWarning: invalid value encountered in scalar divide
+  ret = ret.dtype.type(ret / rcount)
+/gpfs/bwfor/home/tu/tu_tu/tu_wwdth01/DPN-SA-MMD_extension/venv/lib/python3.10/site-packages/numpy/_core/fromnumeric.py:3904: RuntimeWarning: Mean of empty slice.
+  return _methods._mean(a, axis=axis, dtype=dtype,
+/gpfs/bwfor/home/tu/tu_tu/tu_wwdth01/DPN-SA-MMD_extension/venv/lib/python3.10/site-packages/numpy/_core/_methods.py:147: RuntimeWarning: invalid value encountered in scalar divide
+  ret = ret.dtype.type(ret / rcount)
+/gpfs/bwfor/home/tu/tu_tu/tu_wwdth01/DPN-SA-MMD_extension/venv/lib/python3.10/site-packages/numpy/_core/fromnumeric.py:3904: RuntimeWarning: Mean of empty slice.
+  return _methods._mean(a, axis=axis, dtype=dtype,
+/gpfs/bwfor/home/tu/tu_tu/tu_wwdth01/DPN-SA-MMD_extension/venv/lib/python3.10/site-packages/numpy/_core/_methods.py:147: RuntimeWarning: invalid value encountered in scalar divide
+  ret = ret.dtype.type(ret / rcount)

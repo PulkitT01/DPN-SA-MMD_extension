@@ -1,0 +1,50 @@
+{'epochs': 400, 'lr': 0.001, 'batch_size': 32, 'shuffle': True, 'sparsity_probability': 0.8, 'weight_decay': 0.0003, 'BETA': 0.1}
+
+{'epochs': 400, 'lr': 0.001, 'batch_size': 32, 'shuffle': True, 'sparsity_probability': 0.8, 'weight_decay': 0.0003, 'BETA': 0.1}
+
+{'epochs': 400, 'lr': 0.001, 'batch_size': 32, 'shuffle': True, 'sparsity_probability': 0.8, 'weight_decay': 0.0003, 'BETA': 0.1}
+
+Iter: 0, NN_bias_att: nan,  SAE_e2e_bias_att: nan,  SAE_stacked_all_layer_active_bias_att: nan,  SAE_stacked_cur_layer_active_bias_att: nan, LR_bias_att: nan, LR_Lasso_bias_att: nan, NN_policy_risk: nan, SAE_e2e_policy_risk: nan,  SAE_stacked_all_layer_active_policy_risk: nan, SAE_stacked_cur_layer_active_policy_risk: nan, LR_policy_risk: nan, LR_Lasso_policy_risk: nan
+##################################################
+
+Using NN, bias att: nan, SD: nan
+Using NN, policy risk: nan, SD: nan
+-------------------------------------------------
+Using SAE E2E, bias att: nan, SD: nan
+Using SAE E2E, policy risk: nan, SD: nan
+-------------------------------------------------
+Using SAE stacked all layer active, bias att: nan, SD: nan
+Using SAE stacked all layer active,  policy risk: nan, SD: nan
+-------------------------------------------------
+Using SAE stacked cur layer active, bias att: nan, SD: nan
+Using SAE stacked cur layer active, policy risk: nan, SD: nan
+-------------------------------------------------
+Using Logistic Regression, bias att: nan, SD: nan
+Using Logistic Regression, policy risk: nan, SD: nan
+-------------------------------------------------
+Using Lasso Logistic Regression, bias att: nan, SD: nan
+Using Lasso Logistic Regression, policy risk: nan, SD: nan
+##################################################{'epochs': 400, 'lr': 0.001, 'batch_size': 32, 'shuffle': True, 'sparsity_probability': 0.8, 'weight_decay': 0.0003, 'BETA': 0.1}
+
+Iter: 0, NN_bias_att: nan,  SAE_e2e_bias_att: nan,  SAE_stacked_all_layer_active_bias_att: nan,  SAE_stacked_cur_layer_active_bias_att: nan, LR_bias_att: nan, LR_Lasso_bias_att: nan, NN_policy_risk: nan, SAE_e2e_policy_risk: nan,  SAE_stacked_all_layer_active_policy_risk: nan, SAE_stacked_cur_layer_active_policy_risk: nan, LR_policy_risk: nan, LR_Lasso_policy_risk: nan
+##################################################
+
+Using NN, bias att: nan, SD: nan
+Using NN, policy risk: nan, SD: nan
+-------------------------------------------------
+Using SAE E2E, bias att: nan, SD: nan
+Using SAE E2E, policy risk: nan, SD: nan
+-------------------------------------------------
+Using SAE stacked all layer active, bias att: nan, SD: nan
+Using SAE stacked all layer active,  policy risk: nan, SD: nan
+-------------------------------------------------
+Using SAE stacked cur layer active, bias att: nan, SD: nan
+Using SAE stacked cur layer active, policy risk: nan, SD: nan
+-------------------------------------------------
+Using Logistic Regression, bias att: nan, SD: nan
+Using Logistic Regression, policy risk: nan, SD: nan
+-------------------------------------------------
+Using Lasso Logistic Regression, bias att: nan, SD: nan
+Using Lasso Logistic Regression, policy risk: nan, SD: nan
+##################################################{'epochs': 400, 'lr': 0.001, 'batch_size': 32, 'shuffle': True, 'sparsity_probability': 0.8, 'weight_decay': 0.0003, 'BETA': 0.1}
+
