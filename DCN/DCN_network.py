@@ -89,6 +89,10 @@ class DCN_network:
                     # print(y1_hat.shape)
                     # print(y_f.shape)
 
+                    print("y_f:", y_f)
+                    print("min:", y_f.min().item(), "max:", y_f.max().item())
+                    print("y1_hat.shape:", y1_hat.shape)
+
                     if torch.cuda.is_available():
                         loss = F.cross_entropy(y1_hat.cuda(), y_f.cuda()).to(device)
                     else:
