@@ -79,7 +79,7 @@ class DPN_SA_Deep:
         end = datetime.now()
         print("Logistic Regression start time: =", start)
         print("Logistic Regression end time: =", end)
-        diff = start - end
+        diff = end - start
         # diff_minutes = divmod(diff.seconds, 60)
         # print('Time to train: ', diff_minutes[0], 'minutes',
         #       diff_minutes[1], 'seconds')
@@ -95,7 +95,7 @@ class DPN_SA_Deep:
         end = datetime.now()
         print("Logistic Regression Lasso start time: =", start)
         print("Logistic Regression Lasso end time: =", end)
-        diff = start - end
+        diff = end - start
         # diff_minutes = divmod(diff.seconds, 60)
         # print('Time to train: ', diff_minutes[0], 'minutes',
         #       diff_minutes[1], 'seconds')
