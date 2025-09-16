@@ -140,6 +140,16 @@ class Utils:
         """
         Compute the Maximum Mean Discrepancy (MMD) between two samples x and y.
         """
+        # Input validation
+        if x.size(0) == 0 or y.size(0) == 0:
+            return torch.tensor(0.0, device=x.device, requires_grad=True)
+        
+        if x.size(1) != y.size(1):
+            raise ValueError(f"Feature dimensions must match: x has {x.size(1)}, y has {y.size(1)}")
+        
+        # Ensure minimum numerical precision
+        eps = 1e-8
+        
         xx = torch.mm(x, x.t())   # [n, n]
         yy = torch.mm(y, y.t())   # [m, m]
         xy = torch.mm(x, y.t())   # [n, m]
@@ -147,10 +157,10 @@ class Utils:
         rx = (x**2).sum(dim=1, keepdim=True)  # [n, 1]
         ry = (y**2).sum(dim=1, keepdim=True)  # [m, 1]
     
-        # Squared pairwise distances
-        dxx = rx + rx.t() - 2.*xx
-        dyy = ry + ry.t() - 2.*yy
-        dxy = rx + ry.t() - 2.*xy
+        # Squared pairwise distances with numerical stability
+        dxx = torch.clamp(rx + rx.t() - 2.*xx, min=eps)
+        dyy = torch.clamp(ry + ry.t() - 2.*yy, min=eps)
+        dxy = torch.clamp(rx + ry.t() - 2.*xy, min=eps)
     
         # Multiple RBF kernel bandwidths
         bandwidths = [10, 15, 20, 50]
@@ -160,7 +170,9 @@ class Utils:
             YY += torch.exp(-0.5*dyy/a)
             XY += torch.exp(-0.5*dxy/a)
     
-        return XX.mean() + YY.mean() - 2.*XY.mean()
+        # Ensure we don't get negative values due to numerical precision issues
+        mmd_value = XX.mean() + YY.mean() - 2.*XY.mean()
+        return torch.clamp(mmd_value, min=0.0)
 
     @staticmethod
     def MMD_loss(rho, rho_hat, device, kernel="rbf"):

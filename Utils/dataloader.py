@@ -63,23 +63,15 @@ class DataLoader:
     ############################################################################
     # Using GPU for computations
     def preprocess_for_graphs(self, train_path, iter_id=0):
-        # Set the device to GPU if available
-        device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
         train_arr = np.load(train_path)
         np_train_X = train_arr['x'][:, :, iter_id]
-        np_train_X = np_train_X.to(device) if isinstance(np_train_X, torch.Tensor) else torch.tensor(np_train_X, dtype=torch.float32).to(device)
-        
         np_train_T = Utils.convert_to_col_vector(train_arr['t'][:, iter_id])
-        np_train_T = np_train_T.to(device) if isinstance(np_train_T, torch.Tensor) else torch.tensor(np_train_T, dtype=torch.float32).to(device)
-        
         np_train_e = Utils.convert_to_col_vector(train_arr['e'][:, iter_id])
-        np_train_e = np_train_e.to(device) if isinstance(np_train_e, torch.Tensor) else torch.tensor(np_train_e, dtype=torch.float32).to(device)
-        
         np_train_yf = Utils.convert_to_col_vector(train_arr['yf'][:, iter_id])
-        np_train_yf = np_train_yf.to(device) if isinstance(np_train_yf, torch.Tensor) else torch.tensor(np_train_yf, dtype=torch.float32).to(device)
 
-        train_X = torch.cat((np_train_X, np_train_e, np_train_yf), dim=1)
+        # Keep data on CPU until needed to avoid unnecessary GPU memory usage
+        train_X = np.concatenate((np_train_X, np_train_e, np_train_yf), axis=1)
 
         print("Numpy Train Statistics:")
         print(train_X.shape)
@@ -125,39 +117,25 @@ class DataLoader:
     ####################################################################
     # Move computations to GPU
     def preprocess_data_from_csv(self, train_path, test_path, iter_id):
-        # Set the device to GPU if available
-        device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
         train_arr = np.load(train_path)
         test_arr = np.load(test_path)
 
         np_train_X = train_arr['x'][:, :, iter_id]
-        np_train_X = np_train_X.to(device) if isinstance(np_train_X, torch.Tensor) else torch.tensor(np_train_X, dtype=torch.float32).to(device)
-        
         np_train_T = Utils.convert_to_col_vector(train_arr['t'][:, iter_id])
-        np_train_T = np_train_T.to(device) if isinstance(np_train_T, torch.Tensor) else torch.tensor(np_train_T, dtype=torch.float32).to(device)
-        
         np_train_e = Utils.convert_to_col_vector(train_arr['e'][:, iter_id])
-        np_train_e = np_train_e.to(device) if isinstance(np_train_e, torch.Tensor) else torch.tensor(np_train_e, dtype=torch.float32).to(device)
-        
         np_train_yf = Utils.convert_to_col_vector(train_arr['yf'][:, iter_id])
-        np_train_yf = np_train_yf.to(device) if isinstance(np_train_yf, torch.Tensor) else torch.tensor(np_train_yf, dtype=torch.float32).to(device)
 
-        train_X = torch.cat((np_train_X, np_train_e, np_train_yf), dim=1)
+        # Keep data on CPU until needed to avoid unnecessary GPU memory usage
+        train_X = np.concatenate((np_train_X, np_train_e, np_train_yf), axis=1)
 
         np_test_X = test_arr['x'][:, :, iter_id]
-        np_test_X = np_test_X.to(device) if isinstance(np_test_X, torch.Tensor) else torch.tensor(np_test_X, dtype=torch.float32).to(device)
-        
         np_test_T = Utils.convert_to_col_vector(test_arr['t'][:, iter_id])
-        np_test_T = np_test_T.to(device) if isinstance(np_test_T, torch.Tensor) else torch.tensor(np_test_T, dtype=torch.float32).to(device)
-        
         np_test_e = Utils.convert_to_col_vector(test_arr['e'][:, iter_id])
-        np_test_e = np_test_e.to(device) if isinstance(np_test_e, torch.Tensor) else torch.tensor(np_test_e, dtype=torch.float32).to(device)
-        
         np_test_yf = Utils.convert_to_col_vector(test_arr['yf'][:, iter_id])
-        np_test_yf = np_test_yf.to(device) if isinstance(np_test_yf, torch.Tensor) else torch.tensor(np_test_yf, dtype=torch.float32).to(device)
 
-        test_X = torch.cat((np_test_X, np_test_e, np_test_yf), dim=1)
+        # Keep data on CPU until needed to avoid unnecessary GPU memory usage
+        test_X = np.concatenate((np_test_X, np_test_e, np_test_yf), axis=1)
 
         print("Numpy Train Statistics:")
         print(train_X.shape)
